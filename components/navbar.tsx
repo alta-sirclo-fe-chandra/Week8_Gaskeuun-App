@@ -12,10 +12,12 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Image from "next/image";
 import Logo from "../assets/logo.svg";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
-  const [isLoggedIn] = React.useState(false);
-  const pages = isLoggedIn ? ["Home", "My Event"] : ["Home", "Sign Up"];
+  const router = useRouter();
+  const [isLoggedIn] = React.useState(true);
+  const pages = isLoggedIn ? ["Home", "My Event"] : ["Home"];
   const settings = ["Profile", "Event", "Logout"];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -24,18 +26,18 @@ const Navbar = () => {
     null
   );
 
-  const HandleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
-  const HandleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const HandleCloseNavMenu = () => {
+  const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const HandleCloseUserMenu = () => {
+  const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
@@ -43,13 +45,21 @@ const Navbar = () => {
     <AppBar position="static" color="transparent" elevation={0} sx={{ my: 1 }}>
       <Container maxWidth="lg">
         <Toolbar disableGutters>
+          <Box
+            component="div"
+            sx={{
+              flexGrow: 1,
+            }}
+          >
+            <Image alt="logo" src={Logo} height="50" width="50" />
+          </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={HandleOpenNavMenu}
+              onClick={handleOpenNavMenu}
               color="inherit"
             >
               <MenuIcon />
@@ -67,27 +77,17 @@ const Navbar = () => {
                 horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
-              onClose={HandleCloseNavMenu}
+              onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: "block", md: "none" },
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={HandleCloseNavMenu}>
+                <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
-          <Box
-            sx={{
-              height: 50,
-              mr: 2,
-              display: "flex",
-              flexGrow: 1,
-            }}
-          >
-            <Image alt="logo" src={Logo} />
           </Box>
           <Box
             sx={{
@@ -100,7 +100,7 @@ const Navbar = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={HandleCloseNavMenu}
+                onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "black", display: "block" }}
               >
                 {page}
@@ -110,7 +110,7 @@ const Navbar = () => {
 
           <Box sx={{ flexGrow: 0, display: isLoggedIn ? "block" : "none" }}>
             <Box
-              onClick={HandleOpenUserMenu}
+              onClick={handleOpenUserMenu}
               sx={{
                 p: 0,
                 display: "flex",
@@ -145,17 +145,21 @@ const Navbar = () => {
                 horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
-              onClose={HandleCloseUserMenu}
+              onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={HandleCloseUserMenu}>
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
           <Box sx={{ flexGrow: 0, display: isLoggedIn ? "none" : "block" }}>
-            <Button variant="contained" color="warning">
+            <Button
+              variant="contained"
+              color="warning"
+              onClick={() => router.push("/sign-in")}
+            >
               Sign In
             </Button>
           </Box>

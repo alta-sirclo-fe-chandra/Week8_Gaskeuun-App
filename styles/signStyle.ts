@@ -20,11 +20,13 @@ export const fontNavy: SxProps = {
   color: "#0C0D36",
 };
 
+export const subtitle: SxProps = { ...fontNavy, mb: 3}
+
 export const labelForm: SxProps = { ...fontNavy, fontWeight: "bold" };
 
 export const inputForm: SxProps = {
   p: 2,
-  height: "8.5vh",
+  height: "50px",
   border: "1px solid #2A6AC8",
   borderRadius: 1,
   mt: "1%",
@@ -41,10 +43,10 @@ export const button: SxProps = {
 };
 
 export const rightContent: SxProps = {
-  display: { xs: "none", md: "block" },
+  display: { xs: "none", md: "flex" },
   minHeight: "100vh",
-  border: "1px solid blue",
   backgroundColor: "#2A6AC8",
   paddingY: 7,
   paddingX: 3,
+  alignItems: "center"
 };
