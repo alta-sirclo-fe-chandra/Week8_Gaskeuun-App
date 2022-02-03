@@ -1,16 +1,12 @@
+import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useRef } from "react";
 import { LoadingButton } from "@mui/lab";
-import {
-  Box,
-  Button,
-  FormLabel,
-  Grid,
-  InputBase,
-  Typography,
-} from "@mui/material";
+import { Box, FormLabel, Grid, InputBase, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import Logo from "../assets/logo.svg";
 
+import Logo from "../assets/logo.svg";
 import signinGirl from "../assets/signin.png";
 import {
   fontSize,
@@ -23,10 +19,13 @@ import {
   fontNavy,
   subtitle,
 } from "../styles/signStyle";
-import { useRouter } from "next/router";
 
 const SignIn = () => {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
   const router = useRouter();
+
   const handleSubmit = () => {
     console.log("submit");
   };
@@ -39,21 +38,21 @@ const SignIn = () => {
             <Image
               alt="logo"
               src={Logo}
-              height="100"
+              height="80"
               onClick={() => router.push("/")}
             />
           </Box>
-          <Grid lg={6}>
+          <Grid item md={10} lg={6}>
             <Box sx={greetings}>
               <Typography variant="h4" fontWeight="bold" sx={fontNavy}>
                 Welcome back
               </Typography>
-              <Typography variant="subtitle1" sx={subtitle}>
+              <Typography variant="subtitle1" fontWeight={500} sx={subtitle}>
                 Please enter your details!
               </Typography>
             </Box>
 
-            <Box component="form" onSubmit={handleSubmit} marginY="1%">
+            <Box component="form" onSubmit={handleSubmit}>
               <FormLabel sx={labelForm} required={true}>
                 Email
               </FormLabel>
@@ -66,7 +65,8 @@ const SignIn = () => {
                 autoComplete="email"
                 sx={inputForm}
                 autoFocus
-                placeholder="John Doe"
+                placeholder="example@domain.com"
+                inputRef={emailRef}
               />
 
               <FormLabel sx={labelForm} required={true}>
@@ -82,7 +82,7 @@ const SignIn = () => {
                 autoComplete="password"
                 sx={inputForm}
                 autoFocus
-                placeholder="example@domain.com"
+                inputRef={passwordRef}
               />
 
               <LoadingButton
@@ -96,14 +96,16 @@ const SignIn = () => {
               >
                 Sign In
               </LoadingButton>
-              <Button
-                variant="outlined"
-                fullWidth
-                size="large"
-                onClick={() => router.push("sign-up")}
-              >
-                Sign Up
-              </Button>
+              <Link href="sign-up">
+                <Typography
+                  textAlign="center"
+                  variant="subtitle2"
+                  color="#2A6AC8"
+                  sx={{ cursor: "pointer" }}
+                >
+                  Don't have an account? Sign up for free
+                </Typography>
+              </Link>
             </Box>
           </Grid>
         </Grid>
