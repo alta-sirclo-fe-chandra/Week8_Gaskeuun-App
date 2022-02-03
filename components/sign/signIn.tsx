@@ -69,7 +69,7 @@ const SignIn: NextPage = () => {
               id="password"
               name="password"
               type="password"
-              autoComplete="email"
+              autoComplete="password"
               inputRef={passwordRef}
               sx={inputForm}
               autoFocus
