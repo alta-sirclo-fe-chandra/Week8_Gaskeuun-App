@@ -11,14 +11,15 @@ import signupGirl from "../assets/signup.png";
 import {
   fontSize,
   inputForm,
-  leftContent,
+  mainContent,
   labelForm,
   button,
-  rightContent,
+  girlContent,
   greetings,
-  fontNavy,
   subtitle,
+  linkStyle,
 } from "../styles/signStyle";
+import { navy } from "../styles/colorStyle";
 
 const SignUp = () => {
   const nameRef = useRef();
@@ -34,11 +35,11 @@ const SignUp = () => {
   return (
     <ThemeProvider theme={fontSize}>
       <Grid container sx={{ justifyContent: "center" }}>
-        <Grid item md={6} sx={rightContent}>
+        <Grid item md={6} sx={girlContent}>
           <Image src={signupGirl} alt="signup-girl" />
         </Grid>
 
-        <Grid item xs={10} sm={6} sx={leftContent}>
+        <Grid item xs={10} sm={6} sx={mainContent}>
           <Box sx={{ mt: 5, cursor: "pointer" }}>
             <Image
               alt="logo"
@@ -50,7 +51,7 @@ const SignUp = () => {
 
           <Grid item md={10} lg={6}>
             <Box sx={greetings}>
-              <Typography variant="h4" fontWeight="bold" sx={fontNavy}>
+              <Typography variant="h4" fontWeight="bold" sx={navy}>
                 Hello there
               </Typography>
               <Typography variant="subtitle1" fontWeight={500} sx={subtitle}>
@@ -116,16 +117,14 @@ const SignUp = () => {
                 Sign Up
               </LoadingButton>
 
-              <Link href="sign-in">
-                <Typography
-                  textAlign="center"
-                  variant="subtitle2"
-                  color="#2A6AC8"
-                  sx={{ cursor: "pointer" }}
-                >
-                  Already have an account? Sign in now
-                </Typography>
-              </Link>
+              <Typography textAlign="center" variant="subtitle2" sx={navy}>
+                <Box>
+                  Already have an account?{" "}
+                  <Link href="sign-in">
+                    <span style={linkStyle}>Sign in now</span>
+                  </Link>
+                </Box>
+              </Typography>
             </Box>
           </Grid>
         </Grid>

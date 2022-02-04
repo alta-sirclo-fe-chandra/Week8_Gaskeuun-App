@@ -1,10 +1,12 @@
 import { SxProps } from "@mui/material";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
+import { blue, navy } from "./colorStyle";
+
 const theme = createTheme();
 export const fontSize = responsiveFontSizes(theme);
 
-export const leftContent: SxProps = {
+export const mainContent: SxProps = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -16,13 +18,9 @@ export const greetings: SxProps = {
   mb: "2%",
 };
 
-export const fontNavy: SxProps = {
-  color: "#0C0D36",
-};
+export const subtitle: SxProps = { ...navy, mb: 3 };
 
-export const subtitle: SxProps = { ...fontNavy, mb: 3}
-
-export const labelForm: SxProps = { ...fontNavy, fontWeight: "bold" };
+export const labelForm: SxProps = { ...navy, fontWeight: "bold" };
 
 export const inputForm: SxProps = {
   p: 2,
@@ -42,11 +40,17 @@ export const button: SxProps = {
   },
 };
 
-export const rightContent: SxProps = {
+export const girlContent: SxProps = {
   display: { xs: "none", md: "flex" },
   minHeight: "100vh",
   backgroundColor: "#2A6AC8",
   paddingY: 7,
   paddingX: 3,
-  alignItems: "center"
+  alignItems: "center",
+};
+
+export const linkStyle = {
+  ...blue,
+  cursor: "pointer",
+  textDecoration: "underline",
 };
