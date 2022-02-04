@@ -1,28 +1,30 @@
-import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 import { LoadingButton } from "@mui/lab";
-import { Box, FormLabel, Grid, InputBase, Typography } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-
-import Logo from "../assets/logo.svg";
-import signupGirl from "../assets/signup.png";
 import {
-  fontSize,
-  mainContent,
-  girlContent,
-  greetings,
-  subtitle,
-  linkStyle,
-} from "../styles/signStyle";
-import { inputForm, labelForm, button } from "../styles/formStyle";
-import { navy } from "../styles/colorStyle";
+  Avatar,
+  Box,
+  FormLabel,
+  Grid,
+  InputBase,
+  Typography,
+} from "@mui/material";
 
-const SignUp = () => {
-  const nameRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
+import Layout from "../layouts/index";
+import { inputForm, labelForm, button } from "../styles/formStyle";
+import {
+  backToHome,
+  leftContent,
+  pageContainer,
+  profilePicture,
+  rightContent,
+} from "../styles/profileStyle";
+
+const Profile = () => {
+  const nameRef = useRef<HTMLInputElement>();
+  const emailRef = useRef<HTMLInputElement>();
+  const passwordRef = useRef<HTMLInputElement>();
+  const pictureRef = useRef<HTMLInputElement>();
 
   const router = useRouter();
 
@@ -30,33 +32,23 @@ const SignUp = () => {
     console.log("submit");
   };
 
+  const handleBackHome = () => {
+    router.push("/");
+  };
+
   return (
-    <ThemeProvider theme={fontSize}>
-      <Grid container sx={{ justifyContent: "center" }}>
-        <Grid item md={6} sx={girlContent}>
-          <Image src={signupGirl} alt="signup-girl" />
-        </Grid>
+    <Layout>
+      <Box sx={pageContainer}>
+        <Grid container maxWidth="lg">
+          <Grid item xs={12} md={6} sx={leftContent}>
+            <Avatar
+              alt="User"
+              src="https://source.unsplash.com/random"
+              sx={profilePicture}
+            ></Avatar>
+          </Grid>
 
-        <Grid item xs={10} sm={6} sx={mainContent}>
-          <Box sx={{ mt: 5, cursor: "pointer" }}>
-            <Image
-              alt="logo"
-              src={Logo}
-              height="80"
-              onClick={() => router.push("/")}
-            />
-          </Box>
-
-          <Grid item md={10} lg={6}>
-            <Box sx={greetings}>
-              <Typography variant="h4" fontWeight="bold" sx={navy}>
-                Hello there
-              </Typography>
-              <Typography variant="subtitle1" fontWeight={500} sx={subtitle}>
-                Please enter your details!
-              </Typography>
-            </Box>
-
+          <Grid item xs={12} md={6} sx={rightContent}>
             <Box component="form" onSubmit={handleSubmit}>
               <FormLabel sx={labelForm} required={true}>
                 Name
@@ -69,7 +61,7 @@ const SignUp = () => {
                 name="name"
                 autoComplete="name"
                 sx={inputForm}
-                placeholder="John Doe"
+                defaultValue="John Doe"
                 inputRef={nameRef}
               />
 
@@ -84,7 +76,7 @@ const SignUp = () => {
                 name="email"
                 autoComplete="email"
                 sx={inputForm}
-                placeholder="example@domain.com"
+                defaultValue="example@domain.com"
                 inputRef={emailRef}
               />
 
@@ -100,7 +92,24 @@ const SignUp = () => {
                 type="password"
                 autoComplete="password"
                 sx={inputForm}
+                autoFocus
                 inputRef={passwordRef}
+              />
+
+              <FormLabel sx={labelForm} required={true}>
+                Profile Picture
+              </FormLabel>
+              <InputBase
+                margin="dense"
+                required
+                fullWidth
+                id="picture"
+                name="picture"
+                type="picture"
+                autoComplete="picture"
+                sx={inputForm}
+                defaultValue="https://source.unsplash.com/random"
+                inputRef={pictureRef}
               />
 
               <LoadingButton
@@ -112,23 +121,21 @@ const SignUp = () => {
                 sx={button}
                 fullWidth
               >
-                Sign Up
+                Edit Profile
               </LoadingButton>
-
-              <Typography textAlign="center" variant="subtitle2" sx={navy}>
-                <Box>
-                  Already have an account?{" "}
-                  <Link href="sign-in">
-                    <span style={linkStyle}>Sign in now</span>
-                  </Link>
-                </Box>
+              <Typography
+                variant="subtitle2"
+                onClick={handleBackHome}
+                sx={backToHome}
+              >
+                Back to Home
               </Typography>
             </Box>
           </Grid>
         </Grid>
-      </Grid>
-    </ThemeProvider>
+      </Box>
+    </Layout>
   );
 };
 
-export default SignUp;
+export default Profile;
