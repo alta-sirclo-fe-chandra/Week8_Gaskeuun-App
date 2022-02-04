@@ -1,6 +1,8 @@
 import { SxProps } from "@mui/material";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
+import { blue, navy } from "./colorStyle";
+
 const theme = createTheme();
 export const fontSize = responsiveFontSizes(theme);
 
@@ -16,13 +18,9 @@ export const greetings: SxProps = {
   mb: "2%",
 };
 
-export const fontNavy: SxProps = {
-  color: "#0C0D36",
-};
+export const subtitle: SxProps = { ...navy, mb: 3 };
 
-export const subtitle: SxProps = { ...fontNavy, mb: 3 };
-
-export const labelForm: SxProps = { ...fontNavy, fontWeight: "bold" };
+export const labelForm: SxProps = { ...navy, fontWeight: "bold" };
 
 export const inputForm: SxProps = {
   p: 2,
@@ -52,7 +50,7 @@ export const girlContent: SxProps = {
 };
 
 export const linkStyle = {
-  color: "#2A6AC8",
+  ...blue,
   cursor: "pointer",
-  "text-decoration": "underline",
+  textDecoration: "underline",
 };

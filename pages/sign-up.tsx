@@ -16,10 +16,10 @@ import {
   button,
   girlContent,
   greetings,
-  fontNavy,
   subtitle,
   linkStyle,
 } from "../styles/signStyle";
+import { navy } from "../styles/colorStyle";
 
 const SignUp = () => {
   const nameRef = useRef();
@@ -51,7 +51,7 @@ const SignUp = () => {
 
           <Grid item md={10} lg={6}>
             <Box sx={greetings}>
-              <Typography variant="h4" fontWeight="bold" sx={fontNavy}>
+              <Typography variant="h4" fontWeight="bold" sx={navy}>
                 Hello there
               </Typography>
               <Typography variant="subtitle1" fontWeight={500} sx={subtitle}>
@@ -117,7 +117,7 @@ const SignUp = () => {
                 Sign Up
               </LoadingButton>
 
-              <Typography textAlign="center" variant="subtitle2" sx={fontNavy}>
+              <Typography textAlign="center" variant="subtitle2" sx={navy}>
                 <Box>
                   Already have an account?{" "}
                   <Link href="sign-in">
