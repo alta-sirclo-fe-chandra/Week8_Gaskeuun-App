@@ -10,15 +10,13 @@ import Logo from "../assets/logo.svg";
 import signupGirl from "../assets/signup.png";
 import {
   fontSize,
-  inputForm,
   mainContent,
-  labelForm,
-  button,
   girlContent,
   greetings,
   subtitle,
   linkStyle,
 } from "../styles/signStyle";
+import { inputForm, labelForm, button } from "../styles/formStyle";
 import { navy } from "../styles/colorStyle";
 
 const SignUp = () => {

@@ -11,7 +11,14 @@ import {
 } from "@mui/material";
 
 import Layout from "../layouts/index";
-import { inputForm, labelForm, button } from "../styles/signStyle";
+import { inputForm, labelForm, button } from "../styles/formStyle";
+import {
+  backToHome,
+  leftContent,
+  pageContainer,
+  profilePicture,
+  rightContent,
+} from "../styles/profileStyle";
 
 const Profile = () => {
   const nameRef = useRef<HTMLInputElement>();
@@ -31,47 +38,17 @@ const Profile = () => {
 
   return (
     <Layout>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Box sx={pageContainer}>
         <Grid container maxWidth="lg">
-          <Grid
-            item
-            xs={12}
-            md={6}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              p: 5,
-              pb: 0,
-              height: "100%",
-            }}
-          >
+          <Grid item xs={12} md={6} sx={leftContent}>
             <Avatar
               alt="User"
               src="https://source.unsplash.com/random"
-              sx={{ width: "15rem", height: "15rem" }}
+              sx={profilePicture}
             ></Avatar>
           </Grid>
 
-          <Grid
-            item
-            xs={12}
-            md={6}
-            sx={{
-              p: 5,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              minHeight: "80vh",
-            }}
-          >
+          <Grid item xs={12} md={6} sx={rightContent}>
             <Box component="form" onSubmit={handleSubmit}>
               <FormLabel sx={labelForm} required={true}>
                 Name
@@ -147,11 +124,9 @@ const Profile = () => {
                 Edit Profile
               </LoadingButton>
               <Typography
-                textAlign="end"
                 variant="subtitle2"
-                color="#0C0D36"
                 onClick={handleBackHome}
-                sx={{ cursor: "pointer", textDecoration: "underline" }}
+                sx={backToHome}
               >
                 Back to Home
               </Typography>
