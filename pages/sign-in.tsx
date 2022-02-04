@@ -11,13 +11,14 @@ import signinGirl from "../assets/signin.png";
 import {
   fontSize,
   inputForm,
-  leftContent,
+  mainContent,
   labelForm,
   button,
-  rightContent,
+  girlContent,
   greetings,
   fontNavy,
   subtitle,
+  linkStyle,
 } from "../styles/signStyle";
 
 const SignIn = () => {
@@ -33,7 +34,7 @@ const SignIn = () => {
   return (
     <ThemeProvider theme={fontSize}>
       <Grid container sx={{ justifyContent: "center" }}>
-        <Grid item xs={10} sm={6} sx={leftContent}>
+        <Grid item xs={10} sm={6} sx={mainContent}>
           <Box sx={{ mt: 5, cursor: "pointer" }}>
             <Image
               alt="logo"
@@ -96,21 +97,20 @@ const SignIn = () => {
               >
                 Sign In
               </LoadingButton>
-              <Link href="sign-up">
-                <Typography
-                  textAlign="center"
-                  variant="subtitle2"
-                  color="#2A6AC8"
-                  sx={{ cursor: "pointer" }}
-                >
-                  Don't have an account? Sign up for free
-                </Typography>
-              </Link>
+
+              <Typography textAlign="center" variant="subtitle2" sx={fontNavy}>
+                <Box>
+                  Don't have an account?{" "}
+                  <Link href="sign-up">
+                    <span style={linkStyle}>Sign up for free</span>
+                  </Link>
+                </Box>
+              </Typography>
             </Box>
           </Grid>
         </Grid>
 
-        <Grid item md={6} sx={rightContent}>
+        <Grid item md={6} sx={girlContent}>
           <Image src={signinGirl} alt="signin-girl" />
         </Grid>
       </Grid>

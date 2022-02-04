@@ -4,7 +4,7 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 const theme = createTheme();
 export const fontSize = responsiveFontSizes(theme);
 
-export const leftContent: SxProps = {
+export const mainContent: SxProps = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -20,7 +20,7 @@ export const fontNavy: SxProps = {
   color: "#0C0D36",
 };
 
-export const subtitle: SxProps = { ...fontNavy, mb: 3}
+export const subtitle: SxProps = { ...fontNavy, mb: 3 };
 
 export const labelForm: SxProps = { ...fontNavy, fontWeight: "bold" };
 
@@ -42,11 +42,17 @@ export const button: SxProps = {
   },
 };
 
-export const rightContent: SxProps = {
+export const girlContent: SxProps = {
   display: { xs: "none", md: "flex" },
   minHeight: "100vh",
   backgroundColor: "#2A6AC8",
   paddingY: 7,
   paddingX: 3,
-  alignItems: "center"
+  alignItems: "center",
+};
+
+export const linkStyle = {
+  color: "#2A6AC8",
+  cursor: "pointer",
+  "text-decoration": "underline",
 };

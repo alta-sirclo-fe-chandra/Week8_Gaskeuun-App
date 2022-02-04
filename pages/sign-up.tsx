@@ -11,13 +11,14 @@ import signupGirl from "../assets/signup.png";
 import {
   fontSize,
   inputForm,
-  leftContent,
+  mainContent,
   labelForm,
   button,
-  rightContent,
+  girlContent,
   greetings,
   fontNavy,
   subtitle,
+  linkStyle,
 } from "../styles/signStyle";
 
 const SignUp = () => {
@@ -34,11 +35,11 @@ const SignUp = () => {
   return (
     <ThemeProvider theme={fontSize}>
       <Grid container sx={{ justifyContent: "center" }}>
-        <Grid item md={6} sx={rightContent}>
+        <Grid item md={6} sx={girlContent}>
           <Image src={signupGirl} alt="signup-girl" />
         </Grid>
 
-        <Grid item xs={10} sm={6} sx={leftContent}>
+        <Grid item xs={10} sm={6} sx={mainContent}>
           <Box sx={{ mt: 5, cursor: "pointer" }}>
             <Image
               alt="logo"
@@ -116,16 +117,14 @@ const SignUp = () => {
                 Sign Up
               </LoadingButton>
 
-              <Link href="sign-in">
-                <Typography
-                  textAlign="center"
-                  variant="subtitle2"
-                  color="#2A6AC8"
-                  sx={{ cursor: "pointer" }}
-                >
-                  Already have an account? Sign in now
-                </Typography>
-              </Link>
+              <Typography textAlign="center" variant="subtitle2" sx={fontNavy}>
+                <Box>
+                  Already have an account?{" "}
+                  <Link href="sign-in">
+                    <span style={linkStyle}>Sign in now</span>
+                  </Link>
+                </Box>
+              </Typography>
             </Box>
           </Grid>
         </Grid>
