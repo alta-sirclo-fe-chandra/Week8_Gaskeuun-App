@@ -25,7 +25,7 @@ const SignIn = () => {
 
   const router = useRouter();
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 

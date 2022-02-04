@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef, FormEvent } from "react";
 import { LoadingButton } from "@mui/lab";
 import {
   Avatar,
@@ -28,8 +28,8 @@ const Profile = () => {
 
   const router = useRouter();
 
-  const handleSubmit = () => {
-    console.log("submit");
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
   };
 
   const handleBackHome = () => {
