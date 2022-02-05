@@ -13,11 +13,19 @@ import MenuItem from "@mui/material/MenuItem";
 import Image from "next/image";
 import Logo from "../assets/logo.svg";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { useScrollTrigger } from "@mui/material";
+import { button } from "../styles/formStyle";
+
+interface Props {
+  window?: () => Window;
+  children: React.ReactElement;
+}
 
 const Navbar = () => {
   const router = useRouter();
   const [isLoggedIn] = React.useState(true);
-  const pages = isLoggedIn ? ["Home", "My Event"] : ["Home"];
+  const pages = isLoggedIn ? ["Home", "My Event"] : ["Home", "Sign Up"];
   const settings = ["Profile", "Event", "Logout"];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -41,131 +49,157 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
 
-  return (
-    <AppBar position="static" color="transparent" elevation={0} sx={{ my: 1 }}>
-      <Container maxWidth="lg">
-        <Toolbar disableGutters>
-          <Box
-            component="div"
-            sx={{
-              flexGrow: 1,
-            }}
-          >
-            <Image alt="logo" src={Logo} height="50" width="50" />
-          </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <Box
-            sx={{
-              mr: 2,
-              flexGrow: 1,
-              justifyContent: "flex-end",
-              display: { xs: "none", md: "flex" },
-            }}
-          >
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "black", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
+  const ElevationScroll = (props: Props) => {
+    const { children, window } = props;
+    const trigger = useScrollTrigger({
+      disableHysteresis: true,
+      threshold: 0,
+      target: window ? window() : undefined,
+    });
 
-          <Box sx={{ flexGrow: 0, display: isLoggedIn ? "block" : "none" }}>
-            <Box
-              onClick={handleOpenUserMenu}
-              sx={{
-                p: 0,
-                display: "flex",
-                alignItems: "center",
-                cursor: "pointer",
-                flexGrow: 1,
-              }}
-            >
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              <Typography
-                textAlign="center"
+    return React.cloneElement(children, {
+      elevation: trigger ? 4 : 0,
+    });
+  };
+
+  return (
+    <>
+      <ElevationScroll>
+        <AppBar
+          position="fixed"
+          elevation={0}
+          sx={{ backgroundColor: "white" }}
+        >
+          <Container maxWidth="lg">
+            <Toolbar disableGutters>
+              <Box
+                component="div"
                 sx={{
-                  ml: 1,
-                  color: "black",
-                  display: { xs: "none", md: "block" },
+                  flexGrow: 1,
                 }}
               >
-                Hi, Customer
-              </Typography>
-            </Box>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <Box sx={{ flexGrow: 0, display: isLoggedIn ? "none" : "block" }}>
-            <Button
-              variant="contained"
-              color="warning"
-              onClick={() => router.push("/sign-in")}
-            >
-              Sign In
-            </Button>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+                <Link href="/">
+                  <a>
+                    <Image alt="logo" src={Logo} height="50" width="50" />
+                  </a>
+                </Link>
+              </Box>
+              <Box sx={{ display: { xs: "flex", md: "none" } }}>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNavMenu}
+                  color="inherit"
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorElNav}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                  sx={{
+                    display: { xs: "block", md: "none" },
+                  }}
+                >
+                  {pages.map((page) => (
+                    <MenuItem key={page} onClick={handleCloseNavMenu}>
+                      <Typography textAlign="center">{page}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+              <Box
+                sx={{
+                  mr: 2,
+                  flexGrow: 1,
+                  justifyContent: "flex-end",
+                  display: { xs: "none", md: "flex" },
+                }}
+              >
+                {pages.map((page) => (
+                  <Button
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "black", display: "block" }}
+                  >
+                    {page}
+                  </Button>
+                ))}
+              </Box>
+
+              <Box sx={{ flexGrow: 0, display: isLoggedIn ? "block" : "none" }}>
+                <Box
+                  onClick={handleOpenUserMenu}
+                  sx={{
+                    p: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    flexGrow: 1,
+                  }}
+                >
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Typography
+                    textAlign="center"
+                    sx={{
+                      ml: 1,
+                      color: "black",
+                      display: { xs: "none", md: "block" },
+                    }}
+                  >
+                    Hi, Customer
+                  </Typography>
+                </Box>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+              <Box sx={{ flexGrow: 0, display: isLoggedIn ? "none" : "block" }}>
+                <Button
+                  variant="contained"
+                  color="warning"
+                  onClick={() => router.push("/sign-in")}
+                  sx={button}
+                >
+                  Sign In
+                </Button>
+              </Box>
+            </Toolbar>
+          </Container>
+        </AppBar>
+      </ElevationScroll>
+    </>
   );
 };
 export default Navbar;

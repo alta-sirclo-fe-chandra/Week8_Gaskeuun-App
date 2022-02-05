@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import React from "react";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
@@ -16,8 +17,10 @@ const Index = (props: {
     <>
       <Navbar />
       <main role="main">
-        {props.preContainer && props.preContainer}
-        {props.children}
+        <Box sx={{ mt: 10 }}>
+          {props.preContainer && props.preContainer}
+          {props.children}
+        </Box>
       </main>
       <Footer />
     </>

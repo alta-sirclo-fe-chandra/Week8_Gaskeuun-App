@@ -2,11 +2,11 @@ import {
   Box,
   Container,
   Grid,
-  TextField,
   Button,
   Stack,
   Typography,
   Divider,
+  InputBase,
 } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -14,6 +14,7 @@ import Layout from "../layouts";
 import Banner from "../assets/banner.svg";
 import Image from "next/image";
 import { BannerSmStyle, BannerStyle, SearchStyle } from "../styles/homeStyle";
+import { searchForm, searchFormLg } from "../styles/formStyle";
 
 const Home: NextPage = () => {
   const category = ["Game", "Art", "Sport", "Technology", "Music", "Education"];
@@ -42,13 +43,13 @@ const Home: NextPage = () => {
                   <br />
                   Gaskeuun
                 </h1>
-                <TextField
-                  id="outlined-basic"
-                  label="search"
-                  variant="outlined"
-                  color="warning"
-                  focused
-                  sx={SearchStyle}
+                <InputBase
+                  id="search"
+                  name="email"
+                  autoComplete="email"
+                  sx={searchFormLg}
+                  autoFocus
+                  placeholder="search"
                 />
               </Box>
             </Box>
@@ -63,12 +64,13 @@ const Home: NextPage = () => {
                 <br />
                 Gaskeuun
               </h1>
-              <TextField
-                id="outlined-basic"
-                label="search"
-                variant="outlined"
-                color="warning"
-                focused
+              <InputBase
+                id="search"
+                name="email"
+                autoComplete="email"
+                sx={searchForm}
+                autoFocus
+                placeholder="search"
               />
             </Stack>
           </Grid>
@@ -86,36 +88,37 @@ const Home: NextPage = () => {
               ))}
             </Stack>
           </Stack>
-          {category.map((item: string, index: number) => (
-            <>
-              <Divider />
-              <Grid
-                key={index}
-                container
-                justifyContent="space-evenly"
-                sx={{ py: 3 }}
-              >
+          <Stack divider={<Divider />}>
+            {category.map((item: string, index: number) => (
+              <>
                 <Grid
-                  item
-                  xs={10}
-                  sm={4}
-                  sx={{
-                    borderRadius: 5,
-                    display: "block",
-                    bgcolor: "text.secondary",
-                    py: 10,
-                  }}
-                ></Grid>
-                <Grid item xs={10} sm={6} md={5}>
-                  <p>Monday, 12 Feb 2022</p>
-                  <Typography variant="h4" sx={{ mb: 5 }}>
-                    Judul disini yaa
-                  </Typography>
-                  <p>Hosted by Gaskeuun</p>
+                  key={index}
+                  container
+                  justifyContent="space-evenly"
+                  sx={{ py: 3 }}
+                >
+                  <Grid
+                    item
+                    xs={10}
+                    sm={4}
+                    sx={{
+                      borderRadius: 5,
+                      display: "block",
+                      bgcolor: "text.secondary",
+                      py: 10,
+                    }}
+                  ></Grid>
+                  <Grid item xs={10} sm={6} md={5}>
+                    <p>Monday, 12 Feb 2022</p>
+                    <Typography variant="h4" sx={{ mb: 5 }}>
+                      Judul disini yaa
+                    </Typography>
+                    <p>Hosted by Gaskeuun</p>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </>
-          ))}
+              </>
+            ))}
+          </Stack>
         </Container>
       </Layout>
     </>
