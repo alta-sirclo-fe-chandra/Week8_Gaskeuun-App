@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { FormEvent, useState, ChangeEvent, useRef } from "react";
-import { styled } from "@mui/material/styles";
 import { DateTimePicker, LoadingButton, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import {
@@ -9,13 +8,12 @@ import {
   FormLabel,
   Grid,
   MenuItem,
-  TextField,
   Typography,
   useMediaQuery,
 } from "@mui/material";
 
 import Layout from "../../layouts/index";
-import { button, labelForm } from "../../styles/formStyle";
+import { button, labelForm, CustomTextField } from "../../styles/formStyle";
 import { navy } from "../../styles/colorStyle";
 import { backToHome } from "../../styles/profileStyle";
 
@@ -31,26 +29,6 @@ const categories = [
   "Others",
 ];
 
-const CustomTextField = styled(TextField)({
-  "& label.Mui-focused": {
-    color: "#2A6AC8",
-  },
-  "& .MuiInput-underline:after": {
-    borderBottomColor: "#2A6AC8",
-  },
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "#2A6AC8",
-    },
-    "&:hover fieldset": {
-      borderColor: "#2A6AC8",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#2A6AC8",
-    },
-  },
-});
-
 const Create = () => {
   const imageRef = useRef<HTMLInputElement>();
   const titleRef = useRef<HTMLInputElement>();
@@ -59,7 +37,7 @@ const Create = () => {
   const descriptionRef = useRef<HTMLInputElement>();
 
   const [category, setCategory] = useState<string>("Sport");
-  const [value, setValue] = useState<Date | null>(new Date());
+  const [dateTime, setDateTime] = useState<Date | null>(new Date());
 
   const router = useRouter();
 
@@ -77,12 +55,6 @@ const Create = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("value =>", value, "==", typeof value, value?.getFullYear());
-    console.log("image =>", imageRef.current?.value!);
-    console.log("title =>", titleRef.current?.value!);
-    console.log("hostedBy =>", hostedByRef.current?.value!);
-    console.log("location =>", locationRef.current?.value!);
-    console.log("description =>", descriptionRef.current?.value!);
   };
 
   return (
@@ -176,9 +148,9 @@ const Create = () => {
                       renderInput={(props) => (
                         <CustomTextField {...props} fullWidth />
                       )}
-                      value={value}
-                      onChange={(newValue) => {
-                        setValue(newValue);
+                      value={dateTime}
+                      onChange={(newDateTime) => {
+                        setDateTime(newDateTime);
                       }}
                     />
                   </LocalizationProvider>
