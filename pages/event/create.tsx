@@ -13,9 +13,16 @@ import {
 } from "@mui/material";
 
 import Layout from "../../layouts/index";
-import { button, labelForm, CustomTextField } from "../../styles/formStyle";
+import { button, CustomTextField } from "../../styles/formStyle";
 import { navy } from "../../styles/colorStyle";
 import { backToHome } from "../../styles/profileStyle";
+import {
+  gridItemMargin,
+  innerContainer,
+  itemContainer,
+  label,
+  outerContainer,
+} from "../../styles/createUpdateStyle";
 
 const theme = createTheme();
 
@@ -59,8 +66,8 @@ const Create = () => {
 
   return (
     <Layout>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Box width="80%" pt={2} paddingX={2}>
+      <Box sx={outerContainer}>
+        <Box sx={innerContainer}>
           <Typography variant="h4" color={navy.color} mb={3}>
             Create Event
           </Typography>
@@ -68,9 +75,9 @@ const Create = () => {
           <Box component="form" onSubmit={handleSubmit} pb={5}>
             {/* untuk image */}
             <Grid container>
-              <Grid item xs={12} mb={2}>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <FormLabel sx={{ ...labelForm, mb: 1 }} required={true}>
+              <Grid item xs={12} sx={gridItemMargin}>
+                <Box sx={itemContainer}>
+                  <FormLabel sx={label} required={true}>
                     Image
                   </FormLabel>
                   <CustomTextField
@@ -85,9 +92,9 @@ const Create = () => {
 
             {/* untuk title */}
             <Grid container>
-              <Grid item xs={12} mb={2}>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <FormLabel sx={{ ...labelForm, mb: 1 }} required={true}>
+              <Grid item xs={12} sx={gridItemMargin}>
+                <Box sx={itemContainer}>
+                  <FormLabel sx={label} required={true}>
                     Title
                   </FormLabel>
                   <CustomTextField
@@ -102,9 +109,9 @@ const Create = () => {
 
             {/* utk category dan hostedby */}
             <Grid container spacing={isMobile ? 0 : 4}>
-              <Grid item xs={12} md={6} mb={2}>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <FormLabel sx={{ ...labelForm, mb: 1 }} required={true}>
+              <Grid item xs={12} md={6} sx={gridItemMargin}>
+                <Box sx={itemContainer}>
+                  <FormLabel sx={label} required={true}>
                     Category
                   </FormLabel>
                   <CustomTextField
@@ -121,9 +128,9 @@ const Create = () => {
                   </CustomTextField>
                 </Box>
               </Grid>
-              <Grid item xs={12} md={6} mb={2}>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <FormLabel sx={{ ...labelForm, mb: 1 }} required={true}>
+              <Grid item xs={12} md={6} sx={gridItemMargin}>
+                <Box sx={itemContainer}>
+                  <FormLabel sx={label} required={true}>
                     Hosted By
                   </FormLabel>
                   <CustomTextField
@@ -138,9 +145,9 @@ const Create = () => {
 
             {/* untuk date/time dan location */}
             <Grid container spacing={isMobile ? 0 : 4}>
-              <Grid item xs={12} md={6} mb={2}>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <FormLabel sx={{ ...labelForm, mb: 1 }} required={true}>
+              <Grid item xs={12} md={6} sx={gridItemMargin}>
+                <Box sx={itemContainer}>
+                  <FormLabel sx={label} required={true}>
                     Date/Time
                   </FormLabel>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -156,9 +163,9 @@ const Create = () => {
                   </LocalizationProvider>
                 </Box>
               </Grid>
-              <Grid item xs={12} md={6} mb={2}>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <FormLabel sx={{ ...labelForm, mb: 1 }} required={true}>
+              <Grid item xs={12} md={6} sx={gridItemMargin}>
+                <Box sx={itemContainer}>
+                  <FormLabel sx={label} required={true}>
                     Location
                   </FormLabel>
                   <CustomTextField
@@ -173,9 +180,9 @@ const Create = () => {
 
             {/* untuk description */}
             <Grid container>
-              <Grid item xs={12} mb={2}>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <FormLabel sx={{ ...labelForm, mb: 1 }} required={true}>
+              <Grid item xs={12} sx={gridItemMargin}>
+                <Box sx={itemContainer}>
+                  <FormLabel sx={label} required={true}>
                     Description
                   </FormLabel>
                   <CustomTextField
