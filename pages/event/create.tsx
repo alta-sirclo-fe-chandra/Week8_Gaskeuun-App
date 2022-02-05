@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { FormEvent, useState, ChangeEvent, useRef } from "react";
 import { DateTimePicker, LoadingButton, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -15,7 +14,6 @@ import {
 import Layout from "../../layouts/index";
 import { button, CustomTextField } from "../../styles/formStyle";
 import { navy } from "../../styles/colorStyle";
-import { backToHome } from "../../styles/profileStyle";
 import {
   gridItemMargin,
   innerContainer,
@@ -46,15 +44,9 @@ const Create = () => {
   const [category, setCategory] = useState<string>("Sport");
   const [dateTime, setDateTime] = useState<Date | null>(new Date());
 
-  const router = useRouter();
-
   const isMobile = useMediaQuery(theme.breakpoints.down("md"), {
     defaultMatches: true,
   });
-
-  const handleBackHome = () => {
-    router.push("/");
-  };
 
   const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCategory(e.target.value);
@@ -208,14 +200,6 @@ const Create = () => {
             >
               Create
             </LoadingButton>
-
-            <Typography
-              variant="subtitle2"
-              onClick={handleBackHome}
-              sx={backToHome}
-            >
-              Back to Home
-            </Typography>
           </Box>
         </Box>
       </Box>

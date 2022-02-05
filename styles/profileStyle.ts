@@ -27,10 +27,3 @@ export const rightContent: SxProps = {
   justifyContent: "center",
   minHeight: "80vh",
 };
-
-export const backToHome: SxProps = {
-  ...navy,
-  cursor: "pointer",
-  textDecoration: "underline",
-  textAlign: "end",
-};
