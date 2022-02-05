@@ -60,7 +60,7 @@ const Create = () => {
     <Layout>
       <Box sx={outerContainer}>
         <Box sx={innerContainer}>
-          <Typography variant="h4" color={navy.color} mb={3}>
+          <Typography variant="h5" color={navy.color} mb={3}>
             Create Event
           </Typography>
 
