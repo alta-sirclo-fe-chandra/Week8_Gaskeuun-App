@@ -40,7 +40,7 @@ const SignIn = () => {
       <HeadPage />
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item xs={12} sm={6} sx={mainContent}>
-          <Box sx={{ mt: 5, cursor: "pointer" }}>
+          <Box sx={{ mt: 3, cursor: "pointer" }}>
             <Image
               alt="logo"
               src={Logo}

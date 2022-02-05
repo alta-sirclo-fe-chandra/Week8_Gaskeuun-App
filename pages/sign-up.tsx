@@ -16,9 +16,19 @@ import {
   subtitle,
   linkStyle,
 } from "../styles/signStyle";
-import { inputForm, labelForm, button } from "../styles/formStyle";
+import {
+  inputForm,
+  labelForm,
+  button,
+  CustomTextField,
+} from "../styles/formStyle";
 import { navy } from "../styles/colorStyle";
 import HeadPage from "../components/head";
+import {
+  gridItemMargin,
+  itemContainer,
+  label,
+} from "../styles/createUpdateStyle";
 
 const SignUp = () => {
   const nameRef = useRef();
@@ -40,7 +50,7 @@ const SignUp = () => {
         </Grid>
 
         <Grid item xs={10} sm={6} sx={mainContent}>
-          <Box sx={{ mt: 5, cursor: "pointer" }}>
+          <Box sx={{ mt: 3, cursor: "pointer" }}>
             <Image
               alt="logo"
               src={Logo}
@@ -60,7 +70,22 @@ const SignUp = () => {
             </Box>
 
             <Box component="form" onSubmit={handleSubmit}>
-              <FormLabel sx={labelForm} required={true}>
+              <Grid container>
+                <Grid item xs={12} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Name
+                    </FormLabel>
+                    <CustomTextField
+                      id="name"
+                      name="name"
+                      placeholder="John Doe"
+                      inputRef={nameRef}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
+              {/* <FormLabel sx={labelForm} required={true}>
                 Name
               </FormLabel>
               <InputBase
@@ -73,37 +98,38 @@ const SignUp = () => {
                 sx={inputForm}
                 placeholder="John Doe"
                 inputRef={nameRef}
-              />
+              /> */}
 
-              <FormLabel sx={labelForm} required={true}>
-                Email
-              </FormLabel>
-              <InputBase
-                margin="dense"
-                required
-                fullWidth
-                id="email"
-                name="email"
-                autoComplete="email"
-                sx={inputForm}
-                placeholder="example@domain.com"
-                inputRef={emailRef}
-              />
+              <Grid container>
+                <Grid item xs={12} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Email
+                    </FormLabel>
+                    <CustomTextField
+                      id="email"
+                      name="email"
+                      placeholder="example@domain.com"
+                      inputRef={emailRef}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
 
-              <FormLabel sx={labelForm} required={true}>
-                Password
-              </FormLabel>
-              <InputBase
-                margin="dense"
-                required
-                fullWidth
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="password"
-                sx={inputForm}
-                inputRef={passwordRef}
-              />
+              <Grid container>
+                <Grid item xs={12} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Password
+                    </FormLabel>
+                    <CustomTextField
+                      id="password"
+                      name="password"
+                      inputRef={passwordRef}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
 
               <LoadingButton
                 // loading={isLoading}
