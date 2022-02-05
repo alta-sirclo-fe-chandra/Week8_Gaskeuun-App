@@ -18,6 +18,7 @@ import {
 } from "../styles/signStyle";
 import { inputForm, labelForm, button } from "../styles/formStyle";
 import { navy } from "../styles/colorStyle";
+import HeadPage from "../components/head";
 
 const SignUp = () => {
   const nameRef = useRef();
@@ -32,6 +33,7 @@ const SignUp = () => {
 
   return (
     <ThemeProvider theme={fontSize}>
+      <HeadPage />
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item md={6} sx={girlContent}>
           <Image src={signupGirl} alt="signup-girl" />
