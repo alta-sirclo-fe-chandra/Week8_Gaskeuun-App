@@ -44,3 +44,18 @@ export const GET_EVENT_BY_ID = gql`
         }
     }
 `
+export const SIGN_IN = gql`
+  query SIGN_IN($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      code
+      message
+      token
+      user {
+        id
+        name
+        password
+        imageUrl
+      }
+    }
+  }
+`

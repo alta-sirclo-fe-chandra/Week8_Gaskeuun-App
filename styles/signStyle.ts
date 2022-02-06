@@ -14,11 +14,11 @@ export const mainContent: SxProps = {
 
 export const greetings: SxProps = {
   width: "90%",
-  mt: "10%",
-  mb: "2%",
+  mt: 2,
+  mb: 1,
 };
 
-export const subtitle: SxProps = { ...navy, mb: 3 };
+export const subtitle: SxProps = { ...navy, mb: 2 };
 
 export const girlContent: SxProps = {
   display: { xs: "none", md: "flex" },

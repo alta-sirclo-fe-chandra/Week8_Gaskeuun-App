@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef, FormEvent } from "react";
 import { LoadingButton } from "@mui/lab";
-import { Box, FormLabel, Grid, InputBase, Typography } from "@mui/material";
+import { Box, FormLabel, Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
 import Logo from "../assets/logo.svg";
@@ -16,29 +16,46 @@ import {
   subtitle,
   linkStyle,
 } from "../styles/signStyle";
-import { inputForm, labelForm, button } from "../styles/formStyle";
+import { button, CustomTextField } from "../styles/formStyle";
 import { navy } from "../styles/colorStyle";
+import HeadPage from "../components/head";
+import {
+  gridItemMargin,
+  itemContainer,
+  label,
+} from "../styles/createUpdateStyle";
+import { useMutation } from "@apollo/client";
+import { SIGN_UP } from "../libs/mutations";
 
 const SignUp = () => {
-  const nameRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const nameRef = useRef<HTMLInputElement>();
+  const emailRef = useRef<HTMLInputElement>();
+  const passwordRef = useRef<HTMLInputElement>();
+
+  const [signUp, { loading }] = useMutation(SIGN_UP);
 
   const router = useRouter();
 
-  const handleSubmit = () => {
-    console.log("submit");
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const name = nameRef.current?.value;
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+
+    const { data } = await signUp({ variables: { name, email, password } });
   };
 
   return (
     <ThemeProvider theme={fontSize}>
+      <HeadPage />
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item md={6} sx={girlContent}>
           <Image src={signupGirl} alt="signup-girl" />
         </Grid>
 
         <Grid item xs={10} sm={6} sx={mainContent}>
-          <Box sx={{ mt: 5, cursor: "pointer" }}>
+          <Box sx={{ mt: 3, cursor: "pointer" }}>
             <Image
               alt="logo"
               src={Logo}
@@ -58,53 +75,59 @@ const SignUp = () => {
             </Box>
 
             <Box component="form" onSubmit={handleSubmit}>
-              <FormLabel sx={labelForm} required={true}>
-                Name
-              </FormLabel>
-              <InputBase
-                margin="dense"
-                required
-                fullWidth
-                id="name"
-                name="name"
-                autoComplete="name"
-                sx={inputForm}
-                placeholder="John Doe"
-                inputRef={nameRef}
-              />
+              <Grid container>
+                <Grid item xs={12} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Name
+                    </FormLabel>
+                    <CustomTextField
+                      required
+                      id="name"
+                      name="name"
+                      placeholder="John Doe"
+                      inputRef={nameRef}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
 
-              <FormLabel sx={labelForm} required={true}>
-                Email
-              </FormLabel>
-              <InputBase
-                margin="dense"
-                required
-                fullWidth
-                id="email"
-                name="email"
-                autoComplete="email"
-                sx={inputForm}
-                placeholder="example@domain.com"
-                inputRef={emailRef}
-              />
+              <Grid container>
+                <Grid item xs={12} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Email
+                    </FormLabel>
+                    <CustomTextField
+                      required
+                      id="email"
+                      name="email"
+                      placeholder="example@domain.com"
+                      inputRef={emailRef}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
 
-              <FormLabel sx={labelForm} required={true}>
-                Password
-              </FormLabel>
-              <InputBase
-                margin="dense"
-                required
-                fullWidth
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="password"
-                sx={inputForm}
-                inputRef={passwordRef}
-              />
+              <Grid container>
+                <Grid item xs={12} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Password
+                    </FormLabel>
+                    <CustomTextField
+                      required
+                      type="password"
+                      id="password"
+                      name="password"
+                      inputRef={passwordRef}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
 
               <LoadingButton
-                // loading={isLoading}
+                loading={loading}
                 loadingIndicator="Loading..."
                 variant="contained"
                 type="submit"
