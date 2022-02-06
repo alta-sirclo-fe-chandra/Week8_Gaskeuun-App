@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef, FormEvent } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Box, FormLabel, Grid, InputBase, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -26,8 +26,8 @@ const SignUp = () => {
 
   const router = useRouter();
 
-  const handleSubmit = () => {
-    console.log("submit");
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
   };
 
   return (

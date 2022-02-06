@@ -1,19 +1,11 @@
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef, FormEvent } from "react";
 import { LoadingButton } from "@mui/lab";
-import {
-  Avatar,
-  Box,
-  FormLabel,
-  Grid,
-  InputBase,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, FormLabel, Grid, InputBase } from "@mui/material";
 
 import Layout from "../layouts/index";
 import { inputForm, labelForm, button } from "../styles/formStyle";
 import {
-  backToHome,
   leftContent,
   pageContainer,
   profilePicture,
@@ -26,14 +18,8 @@ const Profile = () => {
   const passwordRef = useRef<HTMLInputElement>();
   const pictureRef = useRef<HTMLInputElement>();
 
-  const router = useRouter();
-
-  const handleSubmit = () => {
-    console.log("submit");
-  };
-
-  const handleBackHome = () => {
-    router.push("/");
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
   };
 
   return (
@@ -123,13 +109,6 @@ const Profile = () => {
               >
                 Edit Profile
               </LoadingButton>
-              <Typography
-                variant="subtitle2"
-                onClick={handleBackHome}
-                sx={backToHome}
-              >
-                Back to Home
-              </Typography>
             </Box>
           </Grid>
         </Grid>
