@@ -43,7 +43,7 @@ const SignUp = () => {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
 
-    await signUp({ variables: { name, email, password } });
+    const { data } = await signUp({ variables: { name, email, password } });
   };
 
   return (
@@ -117,6 +117,7 @@ const SignUp = () => {
                     </FormLabel>
                     <CustomTextField
                       required
+                      type="password"
                       id="password"
                       name="password"
                       inputRef={passwordRef}
@@ -126,7 +127,7 @@ const SignUp = () => {
               </Grid>
 
               <LoadingButton
-                // loading={isLoading}
+                loading={loading}
                 loadingIndicator="Loading..."
                 variant="contained"
                 type="submit"
