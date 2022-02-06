@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useContext, useRef, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Box, FormLabel, Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -26,12 +26,17 @@ import {
 } from "../styles/createUpdateStyle";
 import { useQuery } from "@apollo/client";
 import { SIGN_IN } from "../libs/queries";
+import AuthContext from "../store/AuthContext";
+import UserContext from "../store/UserContext";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const emailRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
+
+  const { setIsAuth } = useContext(AuthContext);
+  const { setUser } = useContext(UserContext);
 
   const router = useRouter();
 
@@ -54,6 +59,8 @@ const SignIn = () => {
     const accessToken = localStorage.getItem("accessToken");
 
     if (accessToken) {
+      setIsAuth(true);
+      setUser(data.login.user);
       router.push("/");
     }
   };
