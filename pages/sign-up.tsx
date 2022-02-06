@@ -32,7 +32,7 @@ const SignUp = () => {
   const emailRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
 
-  const [signUp, { loading, error }] = useMutation(SIGN_UP);
+  const [signUp, { loading }] = useMutation(SIGN_UP);
 
   const router = useRouter();
 
