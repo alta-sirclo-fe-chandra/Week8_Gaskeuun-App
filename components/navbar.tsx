@@ -25,8 +25,13 @@ interface Props {
 const Navbar = () => {
   const router = useRouter();
   const [isLoggedIn] = React.useState(true);
-  const pages = isLoggedIn ? ["Home", "My Event"] : ["Home", "Sign Up"];
-  const settings = ["Profile", "Event", "Logout"];
+  const pages = isLoggedIn
+    ? [
+        ["Home", "/"],
+        ["My Event", "/my-event"],
+      ]
+    : ["Home", "Sign Up"];
+  const settings = [["Profile", "/profile"], ["Event", "/event"], ["Logout"]];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -47,6 +52,11 @@ const Navbar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleSetting = (item: any) => {
+    handleCloseUserMenu();
+    if (item[0] !== "Logout") router.push(item[1]);
   };
 
   const ElevationScroll = (props: Props) => {
@@ -91,7 +101,7 @@ const Navbar = () => {
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
                   onClick={handleOpenNavMenu}
-                  color="inherit"
+                  color="primary"
                 >
                   <MenuIcon />
                 </IconButton>
@@ -109,13 +119,11 @@ const Navbar = () => {
                   }}
                   open={Boolean(anchorElNav)}
                   onClose={handleCloseNavMenu}
-                  sx={{
-                    display: { xs: "block", md: "none" },
-                  }}
+                  sx={{ mt: "45px", ml: { xs: "55%", sm: "77%" } }}
                 >
                   {pages.map((page) => (
-                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">{page}</Typography>
+                    <MenuItem key={page[0]} onClick={handleCloseNavMenu}>
+                      <Typography textAlign="center">{page[0]}</Typography>
                     </MenuItem>
                   ))}
                 </Menu>
@@ -130,11 +138,11 @@ const Navbar = () => {
               >
                 {pages.map((page) => (
                   <Button
-                    key={page}
-                    onClick={handleCloseNavMenu}
+                    key={page[0]}
+                    onClick={() => router.push(page[1])}
                     sx={{ my: 2, color: "black", display: "block" }}
                   >
-                    {page}
+                    {page[0]}
                   </Button>
                 ))}
               </Box>
@@ -163,7 +171,7 @@ const Navbar = () => {
                   </Typography>
                 </Box>
                 <Menu
-                  sx={{ mt: "45px" }}
+                  sx={{ mt: "45px", ml: { xs: "70%", sm: "85%" } }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
                   anchorOrigin={{
@@ -179,8 +187,11 @@ const Navbar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting}</Typography>
+                    <MenuItem
+                      key={setting[0]}
+                      onClick={() => handleSetting(setting)}
+                    >
+                      <Typography textAlign="center">{setting[0]}</Typography>
                     </MenuItem>
                   ))}
                 </Menu>

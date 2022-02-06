@@ -19,8 +19,25 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import SendIcon from "@mui/icons-material/Send";
 import { bgblue, bgnavy, navy } from "../styles/colorStyle";
+import { GET_EVENT_BY_ID } from "../libs/queries";
+import client from "../libs/apollo-client";
+import { Event } from "../types/event";
+import moment from "moment";
 
-const EventDetail = ({ params }: Params) => {
+export const getServerSideProps = async ({ params }: Params) => {
+  const { data } = await client.query({
+    query: GET_EVENT_BY_ID,
+    variables: { id: params.id },
+  });
+
+  return {
+    props: {
+      event: data.getEvent,
+    },
+  };
+};
+
+const EventDetail = ({ event }: Event) => {
   const participants = [1, 2, 3];
 
   return (
@@ -40,17 +57,20 @@ const EventDetail = ({ params }: Params) => {
             sx={{ mt: 1, mb: 5 }}
           >
             <Grid item sm={9}>
-              <Typography variant="h4" sx={{ mb: 2 }}>
-                Judul nya disini yaa gaes
+              <Typography
+                variant="h4"
+                sx={{ mb: 2, textTransform: "capitalize" }}
+              >
+                {event.title}
               </Typography>
               <Stack direction="row">
                 <AccessTimeIcon />
                 <Typography variant="body1" sx={{ ml: 1, mr: 4 }}>
-                  11.00 am
+                  {moment(event.date).format("LT")}
                 </Typography>
                 <LocationOnIcon />
                 <Typography variant="body1" sx={{ ml: 1 }}>
-                  Jakarta Convention Center
+                  {event.location}
                 </Typography>
               </Stack>
             </Grid>
@@ -85,7 +105,7 @@ const EventDetail = ({ params }: Params) => {
                       </Avatar>
                       <Typography variant="body1">
                         <span style={{ fontWeight: "bold" }}>Time</span> <br />{" "}
-                        11.00 am
+                        {moment(event.date).format("LT")}
                       </Typography>
                     </Stack>
                     <Stack direction="row" spacing={2} alignItems="center">
@@ -94,7 +114,7 @@ const EventDetail = ({ params }: Params) => {
                       </Avatar>
                       <Typography variant="body1">
                         <span style={{ fontWeight: "bold" }}>Date</span> <br />{" "}
-                        Tuesday, 20 Feb 2022
+                        {moment(event.date).format("dddd MMM Do YYYY")}
                       </Typography>
                     </Stack>
                     <Stack direction="row" spacing={2} alignItems="center">
@@ -103,7 +123,7 @@ const EventDetail = ({ params }: Params) => {
                       </Avatar>
                       <Typography variant="body1">
                         <span style={{ fontWeight: "bold" }}>Location</span>{" "}
-                        <br /> Jakarta
+                        <br /> {event.location}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -115,9 +135,7 @@ const EventDetail = ({ params }: Params) => {
                     </Avatar>
                     <Typography variant="body1" sx={{ textAlign: "justify" }}>
                       <span style={{ fontWeight: "bold" }}>Description</span>{" "}
-                      <br /> Lorem ipsum dolor sit, amet consectetur adipisicing
-                      elit. Nulla officia voluptas quos explicabo commodi
-                      laudantium iste deserunt fugit, necessitatibus nihil?
+                      <br /> {event.description}
                     </Typography>
                   </Stack>
                 </Grid>
