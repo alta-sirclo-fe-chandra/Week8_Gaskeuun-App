@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { FormEvent, useRef } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Box, FormLabel, Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -24,15 +24,38 @@ import {
   itemContainer,
   label,
 } from "../styles/createUpdateStyle";
+import { useQuery } from "@apollo/client";
+import { SIGN_IN } from "../libs/queries";
 
 const SignIn = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const emailRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
 
   const router = useRouter();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const { refetch } = useQuery(SIGN_IN, {
+    variables: { email: "", password: "" },
+  });
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+
+    const { data } = await refetch({
+      email: emailRef.current?.value,
+      password: passwordRef.current?.value,
+    });
+
+    setIsLoading(false);
+    localStorage.setItem("accessToken", data.login.token);
+
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      router.push("/");
+    }
   };
 
   return (
@@ -66,6 +89,7 @@ const SignIn = () => {
                       Email
                     </FormLabel>
                     <CustomTextField
+                      required
                       id="email"
                       name="email"
                       placeholder="example@domain.com"
@@ -82,6 +106,8 @@ const SignIn = () => {
                       Password
                     </FormLabel>
                     <CustomTextField
+                      required
+                      type="password"
                       id="password"
                       name="password"
                       inputRef={passwordRef}
@@ -91,7 +117,7 @@ const SignIn = () => {
               </Grid>
 
               <LoadingButton
-                // loading={isLoading}
+                loading={isLoading}
                 loadingIndicator="Loading..."
                 variant="contained"
                 type="submit"
