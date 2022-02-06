@@ -8,19 +8,19 @@ import {
   Divider,
   InputBase,
 } from "@mui/material";
-import Layout from "../layouts";
-import Banner from "../assets/banner.svg";
+import Layout from "../../layouts";
+import Banner from "../../assets/banner.svg";
 import Image from "next/image";
-import { BannerSmStyle, BannerStyle } from "../styles/homeStyle";
-import { searchForm, searchFormLg } from "../styles/formStyle";
-import { GET_EVENTS, GET_EVENTS_PARAMS } from "../libs/queries";
-import client from "../libs/apollo-client";
+import { BannerSmStyle, BannerStyle } from "../../styles/homeStyle";
+import { searchForm, searchFormLg } from "../../styles/formStyle";
+import { GET_EVENTS, GET_EVENTS_PARAMS } from "../../libs/queries";
+import client from "../../libs/apollo-client";
 import moment from "moment";
 import Link from "next/link";
 import { KeyboardEvent, useRef } from "react";
-import { Events } from "../types/event";
+import { Events } from "../../types/event";
 import { useState } from "react";
-import HeadPage from "../components/head";
+import HeadPage from "../../components/head";
 
 export const getStaticProps = async () => {
   const { data } = await client.query({
@@ -181,7 +181,7 @@ const Home = ({ events }: Events) => {
                     layout="responsive"
                   ></Image>
                 </Grid>
-                <Grid item xs={10} sm={5}>
+                <Grid item xs={10} sm={6} md={5}>
                   <p>{moment(item.date).format("dddd MMM Do YYYY")}</p>
                   <Link href={`/${item.id}`}>
                     <a>

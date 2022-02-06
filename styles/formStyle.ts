@@ -23,6 +23,18 @@ export const button: SxProps = {
   },
 };
 
+export const searchForm: SxProps = {
+  p: 2,
+  height: "50px",
+  border: "1px solid #fff",
+  borderRadius: 1,
+  mt: "1%",
+  mb: "2%",
+  color: "white"
+};
+
+export const searchFormLg: SxProps = { ...searchForm, width: "30%" };
+
 export const CustomTextField = styled(TextField)({
   "& label.Mui-focused": {
     color: "#2A6AC8",

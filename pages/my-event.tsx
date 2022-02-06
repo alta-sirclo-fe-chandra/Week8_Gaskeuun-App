@@ -181,7 +181,7 @@ const Home = ({ events }: Events) => {
                     layout="responsive"
                   ></Image>
                 </Grid>
-                <Grid item xs={10} sm={5}>
+                <Grid item xs={10} sm={6} md={5}>
                   <p>{moment(item.date).format("dddd MMM Do YYYY")}</p>
                   <Link href={`/${item.id}`}>
                     <a>
