@@ -24,13 +24,11 @@ interface Props {
 
 const Navbar = () => {
   const router = useRouter();
-  const [isLoggedIn] = React.useState(true);
-  const pages = isLoggedIn
-    ? [
-        ["Home", "/"],
-        ["My Event", "/my-event"],
-      ]
-    : ["Home", "Sign Up"];
+  const [isLoggedIn] = React.useState(false);
+  const pages = [
+    ["Home", "/"],
+    isLoggedIn ? ["My Event", "/my-event"] : ["Sign Up", "/sign-up"],
+  ];
   const settings = [["Profile", "/profile"], ["Event", "/event"], ["Logout"]];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
