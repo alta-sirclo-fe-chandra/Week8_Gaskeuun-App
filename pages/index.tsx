@@ -165,15 +165,27 @@ const Home = ({ events }: Events) => {
                 <Grid
                   item
                   xs={10}
-                  sm={4}
+                  sm={5}
+                  md={4}
                   sx={{
                     borderRadius: 5,
                     display: "block",
-                    bgcolor: "text.secondary",
-                    py: 10,
+                    px: 10,
+                    boxShadow: 2,
+                    alignSelf: "center",
                   }}
-                ></Grid>
-                <Grid item xs={10} sm={6} md={5}>
+                >
+                  <Image
+                    src={
+                      "https://cdn-icons-png.flaticon.com/512/2659/2659360.png"
+                    }
+                    alt={`${index}`}
+                    width={"100%"}
+                    height={"100%"}
+                    layout="responsive"
+                  ></Image>
+                </Grid>
+                <Grid item xs={10} sm={5}>
                   <p>{moment(item.date).format("dddd MMM Do YYYY")}</p>
                   <Link href={`/${item.id}`}>
                     <a>
