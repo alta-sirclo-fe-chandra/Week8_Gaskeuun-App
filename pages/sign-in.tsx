@@ -6,6 +6,7 @@ import { LoadingButton } from "@mui/lab";
 import { Box, FormLabel, Grid, InputBase, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
+import HeadPage from "../components/head";
 import Logo from "../assets/logo.svg";
 import signinGirl from "../assets/signin.png";
 import {
@@ -31,6 +32,7 @@ const SignIn = () => {
 
   return (
     <ThemeProvider theme={fontSize}>
+      <HeadPage />
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item xs={10} sm={6} sx={mainContent}>
           <Box sx={{ mt: 5, cursor: "pointer" }}>
