@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useRef, FormEvent } from "react";
 import { LoadingButton } from "@mui/lab";
-import { Box, FormLabel, Grid, InputBase, Typography } from "@mui/material";
+import { Box, FormLabel, Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
 import Logo from "../assets/logo.svg";
@@ -16,12 +16,7 @@ import {
   subtitle,
   linkStyle,
 } from "../styles/signStyle";
-import {
-  inputForm,
-  labelForm,
-  button,
-  CustomTextField,
-} from "../styles/formStyle";
+import { button, CustomTextField } from "../styles/formStyle";
 import { navy } from "../styles/colorStyle";
 import HeadPage from "../components/head";
 import {
@@ -29,16 +24,26 @@ import {
   itemContainer,
   label,
 } from "../styles/createUpdateStyle";
+import { useMutation } from "@apollo/client";
+import { SIGN_UP } from "../libs/mutations";
 
 const SignUp = () => {
-  const nameRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const nameRef = useRef<HTMLInputElement>();
+  const emailRef = useRef<HTMLInputElement>();
+  const passwordRef = useRef<HTMLInputElement>();
+
+  const [signUp, { loading, error }] = useMutation(SIGN_UP);
 
   const router = useRouter();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const name = nameRef.current?.value;
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+
+    await signUp({ variables: { name, email, password } });
   };
 
   return (
@@ -77,6 +82,7 @@ const SignUp = () => {
                       Name
                     </FormLabel>
                     <CustomTextField
+                      required
                       id="name"
                       name="name"
                       placeholder="John Doe"
@@ -85,20 +91,6 @@ const SignUp = () => {
                   </Box>
                 </Grid>
               </Grid>
-              {/* <FormLabel sx={labelForm} required={true}>
-                Name
-              </FormLabel>
-              <InputBase
-                margin="dense"
-                required
-                fullWidth
-                id="name"
-                name="name"
-                autoComplete="name"
-                sx={inputForm}
-                placeholder="John Doe"
-                inputRef={nameRef}
-              /> */}
 
               <Grid container>
                 <Grid item xs={12} sx={gridItemMargin}>
@@ -107,6 +99,7 @@ const SignUp = () => {
                       Email
                     </FormLabel>
                     <CustomTextField
+                      required
                       id="email"
                       name="email"
                       placeholder="example@domain.com"
@@ -123,6 +116,7 @@ const SignUp = () => {
                       Password
                     </FormLabel>
                     <CustomTextField
+                      required
                       id="password"
                       name="password"
                       inputRef={passwordRef}
