@@ -8,3 +8,24 @@ export const SIGN_UP = gql`
     }
   }
 `;
+
+export const EDIT_USER = gql`
+  mutation EDIT_USER(
+    $name: String
+    $email: String
+    $password: String
+    $imageUrl: String
+  ) {
+    editUser(
+      edit: {
+        name: $name
+        email: $email
+        password: $password
+        imageUrl: $imageUrl
+      }
+    ) {
+      code
+      message
+    }
+  }
+`;

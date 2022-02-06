@@ -1,16 +1,10 @@
-import { useRouter } from "next/router";
 import { useRef, FormEvent, useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import { Avatar, Box, FormLabel, Grid, InputBase } from "@mui/material";
+import { Avatar, Box, FormLabel, Grid } from "@mui/material";
 
 import HeadPage from "../components/head";
 import Layout from "../layouts/index";
-import {
-  inputForm,
-  labelForm,
-  button,
-  CustomTextField,
-} from "../styles/formStyle";
+import { button, CustomTextField } from "../styles/formStyle";
 import {
   leftContent,
   pageContainer,
@@ -22,9 +16,9 @@ import {
   itemContainer,
   label,
 } from "../styles/createUpdateStyle";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { GET_USER } from "../libs/queries";
-import { User } from "../types/User";
+import { EDIT_USER } from "../libs/mutations";
 
 const Profile = () => {
   const nameRef = useRef<HTMLInputElement>();
@@ -32,7 +26,7 @@ const Profile = () => {
   const passwordRef = useRef<HTMLInputElement>();
   const profilePictureRef = useRef<HTMLInputElement>();
 
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   let userId = 0;
 
@@ -44,12 +38,29 @@ const Profile = () => {
     variables: { userId },
   });
 
-  if (data) {
-    console.log("ini data =>", data);
-  }
+  const [editUser] = useMutation(EDIT_USER);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const newName = nameRef ? nameRef.current?.value : data.getUser.name;
+    const newEmail = emailRef ? emailRef.current?.value : data.getUser.email;
+    const newPassword = passwordRef.current?.value;
+    const newProfilePicture = profilePictureRef
+      ? profilePictureRef.current?.value
+      : data.getUser.imageUrl;
+
+    setIsLoading(true);
+
+    await editUser({
+      variables: {
+        name: newName,
+        email: newEmail,
+        password: newPassword,
+        imageUrl: newProfilePicture,
+      },
+    });
+
+    setIsLoading(false);
   };
 
   return (
@@ -142,7 +153,7 @@ const Profile = () => {
                   </Grid>
 
                   <LoadingButton
-                    // loading={isLoading}
+                    loading={isLoading}
                     loadingIndicator="Loading..."
                     variant="contained"
                     type="submit"
