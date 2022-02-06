@@ -133,7 +133,7 @@ const SignIn = () => {
               <Typography textAlign="center" variant="subtitle2" sx={navy}>
                 <Box>
                   {"Don't have an account? "}
-                  <Link href="sign-up">
+                  <Link href="/sign-up">
                     <a style={linkStyle}>Sign up for free</a>
                   </Link>
                 </Box>
