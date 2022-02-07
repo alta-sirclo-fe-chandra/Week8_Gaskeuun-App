@@ -73,7 +73,7 @@ const Profile = () => {
               <Grid item xs={12} md={6} sx={leftContent}>
                 <Avatar
                   alt="User"
-                  src="https://source.unsplash.com/random"
+                  src={data.getUser.imageUrl}
                   sx={profilePicture}
                 ></Avatar>
               </Grid>
@@ -144,7 +144,7 @@ const Profile = () => {
                           defaultValue={
                             data.getUser.imageUrl
                               ? data.getUser.imageUrl
-                              : "set yout url"
+                              : "Please input your URL"
                           }
                           inputRef={profilePictureRef}
                         />
