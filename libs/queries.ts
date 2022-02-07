@@ -30,6 +30,21 @@ export const GET_EVENTS_PARAMS = gql`
   }
 `;
 
+export const GET_MY_EVENT = gql`
+  query{
+    getMyEvent{
+        userId
+        categoryId
+        title
+        host
+        date
+        location
+        description
+        imageUrl
+    }
+  }
+`
+
 export const GET_EVENT_BY_ID = gql`
   query ($id: Int!) {
     getEvent(eventId: $id) {

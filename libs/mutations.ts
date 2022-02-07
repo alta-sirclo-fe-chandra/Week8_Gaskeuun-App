@@ -29,3 +29,40 @@ export const EDIT_USER = gql`
     }
   }
 `;
+
+export const EDIT_EVENT = gql`
+  mutation(
+    $eventId: Int!
+    $categoryId: Int!
+    $title: String!
+    $host: String!
+    $date: String!
+    $location: String!
+    $description: String!
+    $imageUrl: String!
+  ){
+    updateEvent(eventId: $eventId, edit:{
+        categoryId: $categoryId
+        title: $title
+        host: $host
+        date: $date
+        location: $location
+        description: $description
+        imageUrl: $imageUrl
+    })
+    {
+    code
+    message
+    }
+  }
+`
+
+export const DELETE_EVENT = gql`
+  mutation($eventId: Int!){
+    deleteEvent(eventId: $eventId)
+    {
+    code
+    message
+    }
+  }
+`

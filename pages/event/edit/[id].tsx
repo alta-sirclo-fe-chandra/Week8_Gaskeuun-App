@@ -26,6 +26,11 @@ import client from "../../../libs/apollo";
 import { GET_EVENT_BY_ID } from "../../../libs/queries";
 import { Event } from "../../../types/event";
 import HeadPage from "../../../components/head";
+import { EDIT_EVENT } from "../../../libs/mutations";
+import { useMutation } from "@apollo/client";
+import moment from "moment";
+import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 
 const theme = createTheme();
 
@@ -53,6 +58,10 @@ export const getServerSideProps = async ({ params }: Params) => {
 };
 
 const Edit = ({ event }: Event) => {
+  const router = useRouter();
+  const [editEvent] = useMutation(EDIT_EVENT);
+  const [isLoading, setIsLoading] = useState(false);
+  const [id] = useState(event.id);
   const imageRef = useRef<HTMLInputElement>();
   const titleRef = useRef<HTMLInputElement>();
   const hostedByRef = useRef<HTMLInputElement>();
@@ -70,8 +79,34 @@ const Edit = ({ event }: Event) => {
     setCategory(Number(e.target.value));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     e.preventDefault();
+    await editEvent({
+      variables: {
+        eventId: id,
+        categoryId: category,
+        title: titleRef.current?.value!,
+        host: hostedByRef.current?.value!,
+        date: moment(dateTime).format("YYYY-MM-DD hh:mm:ss"),
+        location: locationRef.current?.value!,
+        description: descriptionRef.current?.value!,
+        imageUrl: imageRef.current?.value!,
+      },
+    })
+      .then(
+        async () =>
+          await Swal.fire(
+            "Good job!",
+            "Your event has been updated",
+            "success"
+          ).then(async (res) => {
+            if (res.isConfirmed) {
+              await router.push("/event");
+            }
+          })
+      )
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -210,7 +245,7 @@ const Edit = ({ event }: Event) => {
               </Grid>
 
               <LoadingButton
-                // loading={isLoading}
+                loading={isLoading}
                 loadingIndicator="Loading..."
                 variant="contained"
                 type="submit"

@@ -6,92 +6,61 @@ import {
   Stack,
   Typography,
   Divider,
-  InputBase,
-  Menu,
-  MenuItem,
   IconButton,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Layout from "../../layouts";
 import Banner from "../../assets/banner.svg";
 import Image from "next/image";
 import { BannerSmStyle, BannerStyle } from "../../styles/homeStyle";
-import { searchForm, searchFormLg, button } from "../../styles/formStyle";
-import { GET_EVENTS, GET_EVENTS_PARAMS } from "../../libs/queries";
+import { button } from "../../styles/formStyle";
+import { GET_MY_EVENT } from "../../libs/queries";
 import client from "../../libs/apollo";
 import moment from "moment";
 import Link from "next/link";
-import { KeyboardEvent, MouseEvent, useRef } from "react";
 import { Events } from "../../types/event";
 import { useState } from "react";
 import HeadPage from "../../components/head";
 import { useRouter } from "next/router";
+import { DELETE_EVENT } from "../../libs/mutations";
+import { useMutation } from "@apollo/client";
+import Swal from "sweetalert2";
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const { data } = await client.query({
-    query: GET_EVENTS,
+    query: GET_MY_EVENT,
   });
 
   return {
     props: {
-      events: data.getEvents,
+      events: data.getMyEvent,
     },
   };
 };
 
 const Home = ({ events }: Events) => {
-  const [data, setData] = useState(events);
-  const searchSm = useRef<HTMLInputElement>();
-  const searchLg = useRef<HTMLInputElement>();
-  const [filter, setFilter] = useState("");
-  const category = ["Game", "Art", "Sport", "Technology", "Music", "Education"];
-  const options = ["Edit", "Delete"];
+  const [data] = useState(events);
   const router = useRouter();
+  const [deleteEvent] = useMutation(DELETE_EVENT);
 
-  const handleKeyPressLg = (e: KeyboardEvent) => {
-    if (e.code === "Enter") {
-      handleSubmit(searchLg.current?.value);
-    }
+  const handleEdit = (id: number) => {
+    router.push(`/event/edit/${id}`);
   };
 
-  const handleKeyPressSm = (e: KeyboardEvent) => {
-    if (e.code === "Enter") {
-      handleSubmit(searchSm.current?.value);
-    }
+  const handleDelete = async (id: number) => {
+    await deleteEvent({
+      variables: {
+        eventId: id,
+      },
+    }).then(() => {
+      Swal.fire("Success", "Your event has been deleted", "success");
+      refreshData();
+    });
   };
 
-  const handleSubmit = async (search: any) => {
-    if (search) {
-      const { data } = await client.query({
-        query: GET_EVENTS_PARAMS,
-        variables: { param: search },
-      });
-      data.getEventParam ? setData(data.getEventParam) : setData([]);
-    } else {
-      setData(events);
-    }
+  const refreshData = () => {
+    router.replace(router.asPath);
   };
-
-  const handleFilter = (item: string) => {
-    handleSubmit(item);
-    setFilter(item);
-  };
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenu = (item: string, id: number) => {
-    handleClose();
-    item === "Edit" ? router.push(`/event/edit/${id}`) : handleDelete(id);
-  };
-
-  const handleDelete = (id: number) => {};
 
   return (
     <>
@@ -119,14 +88,6 @@ const Home = ({ events }: Events) => {
                   <br />
                   Gaskeuun
                 </h1>
-                <InputBase
-                  id="searchLg"
-                  sx={searchFormLg}
-                  autoFocus
-                  placeholder="search"
-                  inputRef={searchLg}
-                  onKeyPress={handleKeyPressLg}
-                />
               </Box>
             </Box>
             <Stack
@@ -140,39 +101,8 @@ const Home = ({ events }: Events) => {
                 <br />
                 Gaskeuun
               </h1>
-              <InputBase
-                id="search"
-                sx={searchForm}
-                autoFocus
-                placeholder="search"
-                inputRef={searchSm}
-                onKeyPress={handleKeyPressSm}
-              />
             </Stack>
           </Grid>
-          <Stack direction="row" justifyContent="center" sx={{ mb: 5 }}>
-            <Stack direction="row" spacing={2} sx={{ overflow: "auto" }}>
-              <Button
-                variant={filter === "" ? "contained" : "outlined"}
-                onClick={() => {
-                  handleSubmit("");
-                  setFilter("");
-                }}
-              >
-                All
-              </Button>
-              {category.map((item: string, index: number) => (
-                <Button
-                  key={index}
-                  variant={filter === item ? "contained" : "outlined"}
-                  sx={{ px: { xs: 7, md: 3 } }}
-                  onClick={() => handleFilter(item)}
-                >
-                  {item}
-                </Button>
-              ))}
-            </Stack>
-          </Stack>
           <Box sx={{ textAlign: "end" }}>
             <Button
               variant="contained"
@@ -227,32 +157,20 @@ const Home = ({ events }: Events) => {
                   </Link>
                   <p>Hosted by {item.host}</p>
                 </Grid>
-                <Grid item lg={1} sx={{ textAlign: "end" }}>
+                <Grid item lg={1} sx={{ textAlign: "center" }}>
+                  <Button
+                    variant="outlined"
+                    color="warning"
+                    onClick={() => handleEdit(item.id)}
+                  >
+                    Edit
+                  </Button>
                   <IconButton
-                    aria-label="more"
-                    id="button"
-                    aria-controls={open ? "menu" : undefined}
-                    aria-haspopup="true"
-                    onClick={handleClick}
+                    aria-label="delete"
+                    onClick={() => handleDelete(item.id)}
                   >
-                    <MoreVertIcon />
+                    <DeleteIcon />
                   </IconButton>
-                  <Menu
-                    id="menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    elevation={1}
-                  >
-                    {options.map((option) => (
-                      <MenuItem
-                        key={option}
-                        onClick={() => handleMenu(option, item.id)}
-                      >
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </Menu>
                 </Grid>
               </Grid>
             ))}
