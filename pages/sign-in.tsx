@@ -7,8 +7,6 @@ import { Box, FormLabel, Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
 import HeadPage from "../components/head";
-import Logo from "../assets/logo.svg";
-import signinGirl from "../assets/signin.png";
 import {
   fontSize,
   mainContent,
@@ -25,7 +23,7 @@ import {
 import { useQuery } from "@apollo/client";
 import { SIGN_IN } from "../libs/queries";
 import Greetings from "../components/sign/Greetings";
-// import Logo from "../components/sign/Logo";
+import Logo from "../components/sign/Logo";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -65,15 +63,8 @@ const SignIn = () => {
       <HeadPage />
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item xs={12} md={6} sx={mainContent}>
-          {/* <Logo /> */}
-          <Box sx={{ mt: 3, cursor: "pointer" }}>
-            <Image
-              alt="logo"
-              src={Logo}
-              height="80"
-              onClick={() => router.push("/")}
-            />
-          </Box>
+          <Logo />
+
           <Grid item md={12} lg={12} sx={{ width: "60%" }}>
             <Greetings
               title={"Welcome back"}
