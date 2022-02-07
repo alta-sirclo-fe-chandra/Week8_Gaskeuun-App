@@ -49,9 +49,11 @@ const SignIn = () => {
     });
 
     setIsLoading(false);
-    localStorage.setItem("accessToken", data.login.token);
 
-    const accessToken = localStorage.getItem("accessToken");
+    const userId = data.login.user.id;
+    const accessToken = data.login.token;
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("userId", userId);
 
     if (accessToken) {
       router.push("/");
@@ -131,7 +133,7 @@ const SignIn = () => {
               <Typography textAlign="center" variant="subtitle2" sx={navy}>
                 <Box>
                   {"Don't have an account? "}
-                  <Link href="sign-up">
+                  <Link href="/sign-up">
                     <a style={linkStyle}>Sign up for free</a>
                   </Link>
                 </Box>

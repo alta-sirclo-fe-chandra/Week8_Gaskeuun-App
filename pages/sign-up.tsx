@@ -141,7 +141,7 @@ const SignUp = () => {
               <Typography textAlign="center" variant="subtitle2" sx={navy}>
                 <Box>
                   {"Already have an account? "}
-                  <Link href="sign-in">
+                  <Link href="/sign-in">
                     <a style={linkStyle}>Sign in now</a>
                   </Link>
                 </Box>
