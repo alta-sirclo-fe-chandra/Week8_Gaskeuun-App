@@ -1,18 +1,11 @@
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useRef, FormEvent, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Box, FormLabel, Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
-import signupGirl from "../assets/signup.png";
-import {
-  fontSize,
-  mainContent,
-  girlContent,
-  linkStyle,
-} from "../styles/signStyle";
+import { fontSize, mainContent, linkStyle } from "../styles/signStyle";
 import { button, CustomTextField } from "../styles/formStyle";
 import { navy } from "../styles/colorStyle";
 import HeadPage from "../components/head";
@@ -56,7 +49,7 @@ const SignUp = () => {
     localStorage.setItem("userId", userId);
 
     if (accessToken) {
-      router.push("/");
+      router.reload();
     }
   };
 

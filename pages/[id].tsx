@@ -239,7 +239,10 @@ const EventDetail = () => {
                       <Grid item lg={11}>
                         <Stack>
                           <Stack direction="row" justifyContent="space-between">
-                            <Typography variant="h6">
+                            <Typography
+                              variant="h6"
+                              sx={{ textTransform: "capitalize" }}
+                            >
                               {item.user.name}
                             </Typography>
                             <Typography variant="subtitle2">

@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useScrollTrigger } from "@mui/material";
 import { button } from "../styles/formStyle";
+import AuthContext from "../store/AuthContext";
 
 interface Props {
   window?: () => Window;
@@ -24,7 +25,9 @@ interface Props {
 
 const Navbar = () => {
   const router = useRouter();
-  const [isLoggedIn] = React.useState(true);
+  const authContext = React.useContext(AuthContext);
+  const isLoggedIn = authContext.isAuth;
+
   const pages = [
     ["Home", "/"],
     isLoggedIn ? ["My Event", "/my-event"] : ["Sign Up", "/sign-up"],
@@ -54,7 +57,12 @@ const Navbar = () => {
 
   const handleSetting = (item: any) => {
     handleCloseUserMenu();
-    if (item[0] !== "Logout") router.push(item[1]);
+    if (item[0] !== "Logout") {
+      router.push(item[1]);
+    } else {
+      router.reload();
+      localStorage.removeItem("accessToken");
+    }
   };
 
   const ElevationScroll = (props: Props) => {
