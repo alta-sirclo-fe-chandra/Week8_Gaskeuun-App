@@ -65,6 +65,23 @@ export const GET_EVENT_BY_ID = gql`
       date
       description
       location
+      participants{
+        id
+        name
+        email
+        imageUrl
+      }
+      Comments{
+          id
+          comment
+          user{
+              id
+              name
+              email
+              imageUrl
+          }
+          updatedAt
+      }
     }
   }
 `
