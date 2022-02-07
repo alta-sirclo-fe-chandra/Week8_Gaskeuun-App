@@ -4,21 +4,26 @@ import { ApolloProvider } from "@apollo/client";
 
 import client from "../libs/apollo";
 import AuthContext from "../store/AuthContext";
-import { useState } from "react";
-import UserContext from "../store/UserContext";
-import { User } from "../types/User";
+import { useEffect, useState } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [isAuth, setIsAuth] = useState(false);
-  const [user, setUser] = useState({} as User);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      setIsAuth(true);
+    } else {
+      setIsAuth(false);
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ isAuth, setIsAuth }}>
-      <UserContext.Provider value={{ user, setUser }}>
-        <ApolloProvider client={client}>
-          <Component {...pageProps} />
-        </ApolloProvider>
-      </UserContext.Provider>
+      <ApolloProvider client={client}>
+        <Component {...pageProps} />
+      </ApolloProvider>
     </AuthContext.Provider>
   );
 }
