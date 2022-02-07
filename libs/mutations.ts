@@ -5,6 +5,14 @@ export const SIGN_UP = gql`
     createUser(input: { name: $name, email: $email, password: $password }) {
       code
       message
+      token
+      user {
+        id
+        name
+        email
+        password
+        imageUrl
+      }
     }
   }
 `;

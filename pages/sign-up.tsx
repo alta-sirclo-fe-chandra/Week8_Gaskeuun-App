@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRef, FormEvent } from "react";
+import { useRef, FormEvent, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Box, FormLabel, Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -32,18 +32,32 @@ const SignUp = () => {
   const emailRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
 
-  const [signUp, { loading }] = useMutation(SIGN_UP);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [signUp] = useMutation(SIGN_UP);
 
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const name = nameRef.current?.value;
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
 
     const { data } = await signUp({ variables: { name, email, password } });
+
+    setIsLoading(false);
+
+    const userId = data.createUser.user.id;
+    const accessToken = data.createUser.token;
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("userId", userId);
+
+    if (accessToken) {
+      router.push("/");
+    }
   };
 
   return (
@@ -127,7 +141,7 @@ const SignUp = () => {
               </Grid>
 
               <LoadingButton
-                loading={loading}
+                loading={isLoading}
                 loadingIndicator="Loading..."
                 variant="contained"
                 type="submit"
