@@ -21,10 +21,28 @@ import {
   label,
   outerContainer,
 } from "../../styles/createUpdateStyle";
+import { CREATE_EVENT } from "../../libs/mutations";
+import { useMutation } from "@apollo/client";
 
 const theme = createTheme();
 
+const modifyValidDateTime = (str: string) => {
+  return str.length === 1 ? `0${str}` : str;
+};
+
+const getStringDateTime = (dateTime: Date) => {
+  const year = String(dateTime.getFullYear());
+  const month = modifyValidDateTime(String(dateTime.getMonth() + 1));
+  const date = modifyValidDateTime(String(dateTime.getDate()));
+  const hours = modifyValidDateTime(String(dateTime.getHours()));
+  const minutes = modifyValidDateTime(String(dateTime.getMinutes()));
+  const seconds = modifyValidDateTime(String(dateTime.getSeconds()));
+
+  return `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+};
+
 const categories = [
+  "Select your category",
   "Sport",
   "Game",
   "Art",
@@ -41,19 +59,79 @@ const Create = () => {
   const locationRef = useRef<HTMLInputElement>();
   const descriptionRef = useRef<HTMLInputElement>();
 
-  const [category, setCategory] = useState<string>("Sport");
-  const [dateTime, setDateTime] = useState<Date | null>(new Date());
+  const [category, setCategory] = useState<string>("Select your category");
+  const [categoryId, setCategoryId] = useState<number>(0);
+  const [dateTime, setDateTime] = useState<Date>(new Date());
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [createEvent] = useMutation(CREATE_EVENT);
 
   const isMobile = useMediaQuery(theme.breakpoints.down("md"), {
     defaultMatches: true,
   });
 
   const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCategory(e.target.value);
+    const selectedCategory = e.target.value;
+    let selectedCategoryId = 1;
+
+    setCategory(selectedCategory);
+
+    switch (selectedCategory) {
+      case "Sport":
+        selectedCategoryId = 1;
+        break;
+      case "Game":
+        selectedCategoryId = 2;
+        break;
+      case "Art":
+        selectedCategoryId = 3;
+        break;
+      case "Technology":
+        selectedCategoryId = 4;
+        break;
+      case "Music":
+        selectedCategoryId = 5;
+        break;
+      case "Education":
+        selectedCategoryId = 6;
+        break;
+      case "Others":
+        selectedCategoryId = 7;
+        break;
+      default:
+        selectedCategoryId = 7;
+    }
+
+    setCategoryId(selectedCategoryId);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+
+    const userId = localStorage.getItem("userId");
+    const title = titleRef.current?.value;
+    const category = categoryId;
+    const host = hostedByRef.current?.value;
+    const date = getStringDateTime(dateTime);
+    const location = locationRef.current?.value;
+    const description = descriptionRef.current?.value;
+    const imageUrl = imageRef.current?.value;
+
+    await createEvent({
+      variables: {
+        userId,
+        categoryId: category,
+        title,
+        host,
+        date,
+        location,
+        description,
+        imageUrl,
+      },
+    });
+
+    setIsLoading(false);
   };
 
   return (
@@ -73,6 +151,7 @@ const Create = () => {
                     Image
                   </FormLabel>
                   <CustomTextField
+                    required
                     id="image"
                     name="image"
                     placeholder="https://source.unsplash.com/random"
@@ -90,6 +169,7 @@ const Create = () => {
                     Title
                   </FormLabel>
                   <CustomTextField
+                    required
                     id="title"
                     name="title"
                     placeholder="Baking Brownies"
@@ -107,7 +187,8 @@ const Create = () => {
                     Category
                   </FormLabel>
                   <CustomTextField
-                    id="outlined-select-currency"
+                    required
+                    id="category"
                     select
                     value={category}
                     onChange={handleCategoryChange}
@@ -126,6 +207,7 @@ const Create = () => {
                     Hosted By
                   </FormLabel>
                   <CustomTextField
+                    required
                     id="hostedBy"
                     name="hostedBy"
                     placeholder="Brownies Lover"
@@ -149,8 +231,9 @@ const Create = () => {
                       )}
                       value={dateTime}
                       onChange={(newDateTime) => {
-                        setDateTime(newDateTime);
+                        setDateTime(newDateTime!);
                       }}
+                      inputFormat="yyyy-MM-dd HH:mm:ss"
                     />
                   </LocalizationProvider>
                 </Box>
@@ -161,6 +244,7 @@ const Create = () => {
                     Location
                   </FormLabel>
                   <CustomTextField
+                    required
                     id="location"
                     name="location"
                     placeholder="Menara Bidakara, Jakarta"
@@ -190,7 +274,7 @@ const Create = () => {
             </Grid>
 
             <LoadingButton
-              // loading={isLoading}
+              loading={isLoading}
               loadingIndicator="Loading..."
               variant="contained"
               type="submit"
