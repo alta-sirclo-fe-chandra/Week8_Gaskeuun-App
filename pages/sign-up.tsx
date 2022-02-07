@@ -6,14 +6,11 @@ import { LoadingButton } from "@mui/lab";
 import { Box, FormLabel, Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
-import Logo from "../assets/logo.svg";
 import signupGirl from "../assets/signup.png";
 import {
   fontSize,
   mainContent,
   girlContent,
-  greetings,
-  subtitle,
   linkStyle,
 } from "../styles/signStyle";
 import { button, CustomTextField } from "../styles/formStyle";
@@ -26,6 +23,9 @@ import {
 } from "../styles/createUpdateStyle";
 import { useMutation } from "@apollo/client";
 import { SIGN_UP } from "../libs/mutations";
+import Logo from "../components/sign/Logo";
+import Greetings from "../components/sign/Greetings";
+import GirlContent from "../components/sign/GirlContent";
 
 const SignUp = () => {
   const nameRef = useRef<HTMLInputElement>();
@@ -64,29 +64,16 @@ const SignUp = () => {
     <ThemeProvider theme={fontSize}>
       <HeadPage />
       <Grid container sx={{ justifyContent: "center" }}>
-        <Grid item md={6} sx={girlContent}>
-          <Image src={signupGirl} alt="signup-girl" />
-        </Grid>
+        <GirlContent />
 
-        <Grid item xs={10} sm={6} sx={mainContent}>
-          <Box sx={{ mt: 3, cursor: "pointer" }}>
-            <Image
-              alt="logo"
-              src={Logo}
-              height="80"
-              onClick={() => router.push("/")}
+        <Grid item xs={12} md={6} sx={mainContent}>
+          <Logo />
+
+          <Grid item md={12} lg={12} sx={{ width: "60%" }}>
+            <Greetings
+              title={"Hello there"}
+              desc={"Please enter your details!"}
             />
-          </Box>
-
-          <Grid item md={10} lg={6}>
-            <Box sx={greetings}>
-              <Typography variant="h4" fontWeight="bold" sx={navy}>
-                Hello there
-              </Typography>
-              <Typography variant="subtitle1" fontWeight={500} sx={subtitle}>
-                Please enter your details!
-              </Typography>
-            </Box>
 
             <Box component="form" onSubmit={handleSubmit}>
               <Grid container>

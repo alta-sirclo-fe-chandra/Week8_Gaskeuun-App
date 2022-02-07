@@ -13,7 +13,7 @@ export const mainContent: SxProps = {
 };
 
 export const greetings: SxProps = {
-  width: "90%",
+  width: "100%",
   mt: 2,
   mb: 1,
 };
