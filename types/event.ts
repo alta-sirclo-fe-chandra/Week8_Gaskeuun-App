@@ -12,7 +12,8 @@ interface event {
   categoryId: number;
   title: string;
   host: string;
-  date: string;
+  date: Date;
   description: string;
   location: string;
+  image: string
 }

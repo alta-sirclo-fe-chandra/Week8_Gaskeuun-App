@@ -14,7 +14,7 @@ import Image from "next/image";
 import { BannerSmStyle, BannerStyle } from "../styles/homeStyle";
 import { searchForm, searchFormLg } from "../styles/formStyle";
 import { GET_EVENTS, GET_EVENTS_PARAMS } from "../libs/queries";
-import client from "../libs/apollo-client";
+import client from "../libs/apollo";
 import moment from "moment";
 import Link from "next/link";
 import { KeyboardEvent, useRef } from "react";

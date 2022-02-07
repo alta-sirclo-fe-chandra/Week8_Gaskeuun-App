@@ -19,7 +19,7 @@ import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutli
 import SendIcon from "@mui/icons-material/Send";
 import { bgblue, bgnavy, navy } from "../styles/colorStyle";
 import { GET_EVENT_BY_ID } from "../libs/queries";
-import client from "../libs/apollo-client";
+import client from "../libs/apollo";
 import { Event } from "../types/event";
 import moment from "moment";
 import HeadPage from "../components/head";

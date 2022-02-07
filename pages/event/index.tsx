@@ -7,20 +7,25 @@ import {
   Typography,
   Divider,
   InputBase,
+  Menu,
+  MenuItem,
+  IconButton,
 } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Layout from "../../layouts";
 import Banner from "../../assets/banner.svg";
 import Image from "next/image";
 import { BannerSmStyle, BannerStyle } from "../../styles/homeStyle";
-import { searchForm, searchFormLg } from "../../styles/formStyle";
+import { searchForm, searchFormLg, button } from "../../styles/formStyle";
 import { GET_EVENTS, GET_EVENTS_PARAMS } from "../../libs/queries";
-import client from "../../libs/apollo-client";
+import client from "../../libs/apollo";
 import moment from "moment";
 import Link from "next/link";
-import { KeyboardEvent, useRef } from "react";
+import { KeyboardEvent, MouseEvent, useRef } from "react";
 import { Events } from "../../types/event";
 import { useState } from "react";
 import HeadPage from "../../components/head";
+import { useRouter } from "next/router";
 
 export const getStaticProps = async () => {
   const { data } = await client.query({
@@ -40,6 +45,8 @@ const Home = ({ events }: Events) => {
   const searchLg = useRef<HTMLInputElement>();
   const [filter, setFilter] = useState("");
   const category = ["Game", "Art", "Sport", "Technology", "Music", "Education"];
+  const options = ["Edit", "Delete"];
+  const router = useRouter();
 
   const handleKeyPressLg = (e: KeyboardEvent) => {
     if (e.code === "Enter") {
@@ -69,6 +76,22 @@ const Home = ({ events }: Events) => {
     handleSubmit(item);
     setFilter(item);
   };
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenu = (item: string, id: number) => {
+    handleClose();
+    item === "Edit" ? router.push(`/event/edit/${id}`) : handleDelete(id);
+  };
+
+  const handleDelete = (id: number) => {};
 
   return (
     <>
@@ -150,6 +173,15 @@ const Home = ({ events }: Events) => {
               ))}
             </Stack>
           </Stack>
+          <Box sx={{ textAlign: "end" }}>
+            <Button
+              variant="contained"
+              sx={button}
+              onClick={() => router.push("/event/create")}
+            >
+              Add Event
+            </Button>
+          </Box>
           <Stack divider={<Divider />}>
             {data.map((item: any, index) => (
               <Grid
@@ -194,6 +226,33 @@ const Home = ({ events }: Events) => {
                     </a>
                   </Link>
                   <p>Hosted by {item.host}</p>
+                </Grid>
+                <Grid item lg={1} sx={{ textAlign: "end" }}>
+                  <IconButton
+                    aria-label="more"
+                    id="button"
+                    aria-controls={open ? "menu" : undefined}
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    id="menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    elevation={1}
+                  >
+                    {options.map((option) => (
+                      <MenuItem
+                        key={option}
+                        onClick={() => handleMenu(option, item.id)}
+                      >
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Menu>
                 </Grid>
               </Grid>
             ))}

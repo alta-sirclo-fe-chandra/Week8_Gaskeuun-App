@@ -24,7 +24,7 @@ interface Props {
 
 const Navbar = () => {
   const router = useRouter();
-  const [isLoggedIn] = React.useState(false);
+  const [isLoggedIn] = React.useState(true);
   const pages = [
     ["Home", "/"],
     isLoggedIn ? ["My Event", "/my-event"] : ["Sign Up", "/sign-up"],
@@ -156,7 +156,7 @@ const Navbar = () => {
                     flexGrow: 1,
                   }}
                 >
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Customer" />
                   <Typography
                     textAlign="center"
                     sx={{
