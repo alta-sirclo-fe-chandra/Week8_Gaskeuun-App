@@ -13,8 +13,6 @@ import {
   fontSize,
   mainContent,
   girlContent,
-  greetings,
-  subtitle,
   linkStyle,
 } from "../styles/signStyle";
 import { button, CustomTextField } from "../styles/formStyle";
@@ -26,6 +24,7 @@ import {
 } from "../styles/createUpdateStyle";
 import { useQuery } from "@apollo/client";
 import { SIGN_IN } from "../libs/queries";
+import Greetings from "../components/sign/Greetings";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -64,7 +63,7 @@ const SignIn = () => {
     <ThemeProvider theme={fontSize}>
       <HeadPage />
       <Grid container sx={{ justifyContent: "center" }}>
-        <Grid item xs={12} sm={6} sx={mainContent}>
+        <Grid item xs={12} md={6} sx={mainContent}>
           <Box sx={{ mt: 3, cursor: "pointer" }}>
             <Image
               alt="logo"
@@ -73,15 +72,11 @@ const SignIn = () => {
               onClick={() => router.push("/")}
             />
           </Box>
-          <Grid item md={10} lg={6}>
-            <Box sx={greetings}>
-              <Typography variant="h4" fontWeight="bold" sx={navy}>
-                Welcome back
-              </Typography>
-              <Typography variant="subtitle1" fontWeight={500} sx={subtitle}>
-                Please enter your details!
-              </Typography>
-            </Box>
+          <Grid item md={12} lg={12} sx={{ width: "60%" }}>
+            <Greetings
+              title={"Welcome back"}
+              desc={"Please enter your details!"}
+            />
 
             <Box component="form" onSubmit={handleSubmit}>
               <Grid container>
