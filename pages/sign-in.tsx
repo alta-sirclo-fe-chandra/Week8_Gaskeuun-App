@@ -24,6 +24,7 @@ import { useQuery } from "@apollo/client";
 import { SIGN_IN } from "../libs/queries";
 import Greetings from "../components/sign/Greetings";
 import Logo from "../components/sign/Logo";
+import GirlContent from "../components/sign/GirlContent";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -130,15 +131,7 @@ const SignIn = () => {
           </Grid>
         </Grid>
 
-        <Grid item md={6} sx={girlContent}>
-          <Image
-            src="/signin.png"
-            alt="signin-girl"
-            width={650}
-            height={500}
-            priority
-          />
-        </Grid>
+        <GirlContent />
       </Grid>
     </ThemeProvider>
   );
