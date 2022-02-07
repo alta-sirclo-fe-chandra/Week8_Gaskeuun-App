@@ -102,3 +102,23 @@ export const DELETE_EVENT = gql`
     }
   }
 `
+
+export const CREATE_PARTICIPANT = gql`
+  mutation($eventId: Int!) {
+    createParticipant(eventId: $eventId)
+    {
+        code
+        message
+    }
+  }
+`
+
+export const CREATE_COMMENT = gql`
+  mutation($eventId: Int!, $comment: String!) {
+    createComment(eventId: $eventId, comment: $comment)
+    {
+        code
+        message
+    }
+  }
+`

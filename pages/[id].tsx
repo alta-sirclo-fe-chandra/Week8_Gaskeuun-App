@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Params } from "next/dist/server/router";
-import React from "react";
+import React, { useRef } from "react";
 import Layout from "../layouts";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -23,6 +23,9 @@ import client from "../libs/apollo";
 import { Event } from "../types/event";
 import moment from "moment";
 import HeadPage from "../components/head";
+import { useMutation } from "@apollo/client";
+import { CREATE_COMMENT, CREATE_PARTICIPANT } from "../libs/mutations";
+import Swal from "sweetalert2";
 
 export const getServerSideProps = async ({ params }: Params) => {
   const { data } = await client.query({
@@ -38,7 +41,31 @@ export const getServerSideProps = async ({ params }: Params) => {
 };
 
 const EventDetail = ({ event }: Event) => {
+  const comment = useRef<HTMLInputElement>();
+  const [createParticipant] = useMutation(CREATE_PARTICIPANT);
+  const [createComment] = useMutation(CREATE_COMMENT);
   const participants = [1, 2, 3];
+
+  const handleJoin = async () => {
+    await createParticipant({
+      variables: {
+        eventId: event.id,
+      },
+    }).then(() =>
+      Swal.fire("Good job!", "Success to join this event", "success")
+    );
+  };
+
+  const handleComment = async () => {
+    await createComment({
+      variables: {
+        eventId: event.id,
+        comment: comment.current?.value,
+      },
+    }).then(() =>
+      Swal.fire("Good job!", "Your comment has been created", "success")
+    );
+  };
 
   return (
     <>
@@ -71,7 +98,11 @@ const EventDetail = ({ event }: Event) => {
               </Stack>
             </Grid>
             <Grid item sm={3} textAlign="end">
-              <Button variant="contained" sx={{ bgcolor: bgblue }}>
+              <Button
+                variant="contained"
+                sx={{ bgcolor: bgblue }}
+                onClick={handleJoin}
+              >
                 Join Free
               </Button>
             </Grid>
@@ -171,8 +202,13 @@ const EventDetail = ({ event }: Event) => {
                   label="Share your though!"
                   variant="standard"
                   sx={{ width: "95%" }}
+                  inputRef={comment}
                 />
-                <IconButton sx={{ color: navy }} aria-label="send">
+                <IconButton
+                  sx={{ color: navy }}
+                  aria-label="send"
+                  onClick={handleComment}
+                >
                   <SendIcon />
                 </IconButton>
               </Stack>

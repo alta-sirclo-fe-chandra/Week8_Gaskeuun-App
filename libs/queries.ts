@@ -58,7 +58,23 @@ export const GET_EVENT_BY_ID = gql`
       location
     }
   }
-`;
+`
+
+export const GET_JOINED_EVENTS = gql`
+  query{
+    getEventJoinedByUser{
+        userId
+        categoryId
+        title
+        host
+        date
+        location
+        description
+        imageUrl
+    }
+  }
+`
+
 export const SIGN_IN = gql`
   query SIGN_IN($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -84,4 +100,18 @@ export const GET_USER = gql`
       imageUrl
     }
   }
-`;
+`
+
+export const GET_PARTICIPANTS = gql`
+  query($eventId: Int!) {
+    getParticipants(eventId: $eventId) {
+        participants {
+            id
+            name
+            email 
+            imageUrl
+        }
+        totalPage
+    }
+  }
+` 

@@ -2,73 +2,36 @@ import {
   Box,
   Container,
   Grid,
-  Button,
   Stack,
   Typography,
   Divider,
-  InputBase,
 } from "@mui/material";
 import Layout from "../layouts";
 import Banner from "../assets/banner.svg";
 import Image from "next/image";
 import { BannerSmStyle, BannerStyle } from "../styles/homeStyle";
-import { searchForm, searchFormLg } from "../styles/formStyle";
-import { GET_EVENTS, GET_EVENTS_PARAMS } from "../libs/queries";
+import { GET_JOINED_EVENTS } from "../libs/queries";
 import client from "../libs/apollo";
 import moment from "moment";
 import Link from "next/link";
-import { KeyboardEvent, useRef } from "react";
 import { Events } from "../types/event";
 import { useState } from "react";
 import HeadPage from "../components/head";
 
 export const getStaticProps = async () => {
   const { data } = await client.query({
-    query: GET_EVENTS,
+    query: GET_JOINED_EVENTS,
   });
 
   return {
     props: {
-      events: data.getEvents,
+      events: data.getEventJoinedByUser,
     },
   };
 };
 
 const Home = ({ events }: Events) => {
-  const [data, setData] = useState(events);
-  const searchSm = useRef<HTMLInputElement>();
-  const searchLg = useRef<HTMLInputElement>();
-  const [filter, setFilter] = useState("");
-  const category = ["Game", "Art", "Sport", "Technology", "Music", "Education"];
-
-  const handleKeyPressLg = (e: KeyboardEvent) => {
-    if (e.code === "Enter") {
-      handleSubmit(searchLg.current?.value);
-    }
-  };
-
-  const handleKeyPressSm = (e: KeyboardEvent) => {
-    if (e.code === "Enter") {
-      handleSubmit(searchSm.current?.value);
-    }
-  };
-
-  const handleSubmit = async (search: any) => {
-    if (search) {
-      const { data } = await client.query({
-        query: GET_EVENTS_PARAMS,
-        variables: { param: search },
-      });
-      data.getEventParam ? setData(data.getEventParam) : setData([]);
-    } else {
-      setData(events);
-    }
-  };
-
-  const handleFilter = (item: string) => {
-    handleSubmit(item);
-    setFilter(item);
-  };
+  const [data] = useState(events);
 
   return (
     <>
@@ -96,14 +59,6 @@ const Home = ({ events }: Events) => {
                   <br />
                   Gaskeuun
                 </h1>
-                <InputBase
-                  id="searchLg"
-                  sx={searchFormLg}
-                  autoFocus
-                  placeholder="search"
-                  inputRef={searchLg}
-                  onKeyPress={handleKeyPressLg}
-                />
               </Box>
             </Box>
             <Stack
@@ -117,39 +72,8 @@ const Home = ({ events }: Events) => {
                 <br />
                 Gaskeuun
               </h1>
-              <InputBase
-                id="search"
-                sx={searchForm}
-                autoFocus
-                placeholder="search"
-                inputRef={searchSm}
-                onKeyPress={handleKeyPressSm}
-              />
             </Stack>
           </Grid>
-          <Stack direction="row" justifyContent="center" sx={{ mb: 5 }}>
-            <Stack direction="row" spacing={2} sx={{ overflow: "auto" }}>
-              <Button
-                variant={filter === "" ? "contained" : "outlined"}
-                onClick={() => {
-                  handleSubmit("");
-                  setFilter("");
-                }}
-              >
-                All
-              </Button>
-              {category.map((item: string, index: number) => (
-                <Button
-                  key={index}
-                  variant={filter === item ? "contained" : "outlined"}
-                  sx={{ px: { xs: 7, md: 3 } }}
-                  onClick={() => handleFilter(item)}
-                >
-                  {item}
-                </Button>
-              ))}
-            </Stack>
-          </Stack>
           <Stack divider={<Divider />}>
             {data.map((item: any, index) => (
               <Grid
