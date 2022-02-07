@@ -6,7 +6,11 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NDQ2Mzg1MTcsImlkIjo4fQ.okZLuuTwJ89M1zFH0qHa7oDkCIW1opGjyVxhbQwHF0Q";
+  let token: string | null = "";
+
+  if (typeof window !== "undefined") {
+    token = localStorage.getItem("accessToken");
+  }
 
   return {
     headers: {

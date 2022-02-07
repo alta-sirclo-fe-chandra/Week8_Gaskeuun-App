@@ -29,7 +29,7 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      events: data.getEvents,
+      events: data.getEvents.event,
     },
   };
 };
@@ -53,13 +53,15 @@ const Home = ({ events }: Events) => {
     }
   };
 
-  const handleSubmit = async (search: any) => {
+  const handleSubmit = async (search?: any) => {
     if (search) {
       const { data } = await client.query({
         query: GET_EVENTS_PARAMS,
         variables: { param: search },
       });
-      data.getEventParam ? setData(data.getEventParam) : setData([]);
+      data.getEventParam.event
+        ? setData(data.getEventParam.event)
+        : setData([]);
     } else {
       setData(events);
     }

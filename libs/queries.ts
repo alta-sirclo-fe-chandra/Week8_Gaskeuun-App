@@ -1,16 +1,19 @@
 import { gql } from "@apollo/client";
 
 export const GET_EVENTS = gql`
-  query {
-    getEvents {
-      id
-      userId
-      categoryId
-      title
-      host
-      date
-      description
-      location
+  query{
+    getEvents{
+        event{
+            id
+            userId
+            categoryId
+            title
+            host
+            date
+            location
+            imageUrl
+        }
+        totalPage
     }
   }
 `;
@@ -18,14 +21,17 @@ export const GET_EVENTS = gql`
 export const GET_EVENTS_PARAMS = gql`
   query ($param: String!) {
     getEventParam(param: $param) {
-      id
-      userId
-      categoryId
-      title
-      host
-      date
-      description
-      location
+      event{
+        id
+        userId
+        categoryId
+        title
+        host
+        date
+        description
+        location
+      }
+      totalPage
     }
   }
 `;
@@ -33,14 +39,17 @@ export const GET_EVENTS_PARAMS = gql`
 export const GET_MY_EVENT = gql`
   query{
     getMyEvent{
+      event{
+        id
         userId
         categoryId
         title
         host
         date
         location
-        description
         imageUrl
+    }
+    totalPage
     }
   }
 `
@@ -63,14 +72,17 @@ export const GET_EVENT_BY_ID = gql`
 export const GET_JOINED_EVENTS = gql`
   query{
     getEventJoinedByUser{
+      event{
+        id
         userId
         categoryId
         title
         host
         date
         location
-        description
         imageUrl
+    }
+    totalPage
     }
   }
 `
