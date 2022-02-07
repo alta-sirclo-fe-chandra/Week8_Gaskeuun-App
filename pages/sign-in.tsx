@@ -7,14 +7,10 @@ import { Box, FormLabel, Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
 import HeadPage from "../components/head";
-import Logo from "../assets/logo.svg";
-import signinGirl from "../assets/signin.png";
 import {
   fontSize,
   mainContent,
   girlContent,
-  greetings,
-  subtitle,
   linkStyle,
 } from "../styles/signStyle";
 import { button, CustomTextField } from "../styles/formStyle";
@@ -26,6 +22,9 @@ import {
 } from "../styles/createUpdateStyle";
 import { useQuery } from "@apollo/client";
 import { SIGN_IN } from "../libs/queries";
+import Greetings from "../components/sign/Greetings";
+import Logo from "../components/sign/Logo";
+import GirlContent from "../components/sign/GirlContent";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -64,24 +63,14 @@ const SignIn = () => {
     <ThemeProvider theme={fontSize}>
       <HeadPage />
       <Grid container sx={{ justifyContent: "center" }}>
-        <Grid item xs={12} sm={6} sx={mainContent}>
-          <Box sx={{ mt: 3, cursor: "pointer" }}>
-            <Image
-              alt="logo"
-              src={Logo}
-              height="80"
-              onClick={() => router.push("/")}
+        <Grid item xs={12} md={6} sx={mainContent}>
+          <Logo />
+
+          <Grid item md={12} lg={12} sx={{ width: "60%" }}>
+            <Greetings
+              title={"Welcome back"}
+              desc={"Please enter your details!"}
             />
-          </Box>
-          <Grid item md={10} lg={6}>
-            <Box sx={greetings}>
-              <Typography variant="h4" fontWeight="bold" sx={navy}>
-                Welcome back
-              </Typography>
-              <Typography variant="subtitle1" fontWeight={500} sx={subtitle}>
-                Please enter your details!
-              </Typography>
-            </Box>
 
             <Box component="form" onSubmit={handleSubmit}>
               <Grid container>
@@ -142,9 +131,7 @@ const SignIn = () => {
           </Grid>
         </Grid>
 
-        <Grid item md={6} sx={girlContent}>
-          <Image src={signinGirl} alt="signin-girl" />
-        </Grid>
+        <GirlContent />
       </Grid>
     </ThemeProvider>
   );
