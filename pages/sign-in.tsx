@@ -25,6 +25,7 @@ import {
 import { useQuery } from "@apollo/client";
 import { SIGN_IN } from "../libs/queries";
 import Greetings from "../components/sign/Greetings";
+// import Logo from "../components/sign/Logo";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -64,6 +65,7 @@ const SignIn = () => {
       <HeadPage />
       <Grid container sx={{ justifyContent: "center" }}>
         <Grid item xs={12} md={6} sx={mainContent}>
+          {/* <Logo /> */}
           <Box sx={{ mt: 3, cursor: "pointer" }}>
             <Image
               alt="logo"
@@ -138,7 +140,13 @@ const SignIn = () => {
         </Grid>
 
         <Grid item md={6} sx={girlContent}>
-          <Image src={signinGirl} alt="signin-girl" />
+          <Image
+            src="/signin.png"
+            alt="signin-girl"
+            width={650}
+            height={500}
+            priority
+          />
         </Grid>
       </Grid>
     </ThemeProvider>
