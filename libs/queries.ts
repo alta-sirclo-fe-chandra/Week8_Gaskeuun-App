@@ -30,6 +30,7 @@ export const GET_EVENTS_PARAMS = gql`
         date
         description
         location
+        imageUrl
       }
       totalPage
     }
@@ -65,6 +66,7 @@ export const GET_EVENT_BY_ID = gql`
       date
       description
       location
+      imageUrl
       participants{
         id
         name

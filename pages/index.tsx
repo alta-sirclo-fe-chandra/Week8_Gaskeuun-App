@@ -162,26 +162,12 @@ const Home = () => {
                   justifyContent="space-evenly"
                   sx={{ py: 3 }}
                 >
-                  <Grid
-                    item
-                    xs={10}
-                    sm={5}
-                    md={4}
-                    sx={{
-                      borderRadius: 5,
-                      display: "block",
-                      px: 10,
-                      boxShadow: 2,
-                      alignSelf: "center",
-                    }}
-                  >
+                  <Grid item xs={10} sm={5} md={4} sx={{ px: 3 }}>
                     <Image
-                      src={
-                        "https://cdn-icons-png.flaticon.com/512/2659/2659360.png"
-                      }
+                      src={item.imageUrl}
                       alt={`${item.id}`}
                       width={"100%"}
-                      height={"100%"}
+                      height={"70%"}
                       layout="responsive"
                     ></Image>
                   </Grid>
