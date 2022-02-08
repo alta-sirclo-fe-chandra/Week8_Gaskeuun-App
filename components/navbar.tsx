@@ -50,7 +50,7 @@ const Navbar = () => {
 
   const pages = [
     ["Home", "/"],
-    isLoggedIn ? ["My Event", "/my-event"] : ["Sign Up", "/sign-up"],
+    isLoggedIn ? ["Join Event", "/my-event"] : ["Sign Up", "/sign-up"],
   ];
   const settings = [["Profile", "/profile"], ["Event", "/event"], ["Logout"]];
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -83,6 +83,7 @@ const Navbar = () => {
       setIsLoggedIn(false);
       localStorage.removeItem("accessToken");
       localStorage.removeItem("userId");
+      router.push("/");
     }
   };
 

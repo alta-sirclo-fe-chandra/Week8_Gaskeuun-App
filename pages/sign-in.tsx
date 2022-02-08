@@ -4,6 +4,7 @@ import { FormEvent, useRef, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Box, FormLabel, Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
+import Swal from "sweetalert2";
 
 import HeadPage from "../components/head";
 import { fontSize, mainContent, linkStyle } from "../styles/signStyle";
@@ -28,7 +29,7 @@ const SignIn = () => {
 
   const router = useRouter();
 
-  const { refetch } = useQuery(SIGN_IN, {
+  const { refetch, error } = useQuery(SIGN_IN, {
     variables: { email: "", password: "" },
   });
 
@@ -36,20 +37,29 @@ const SignIn = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    const { data } = await refetch({
-      email: emailRef.current?.value,
-      password: passwordRef.current?.value,
-    });
+    try {
+      const { data } = await refetch({
+        email: emailRef.current?.value,
+        password: passwordRef.current?.value,
+      });
 
-    setIsLoading(false);
+      const userId = data.login.user.id;
+      const accessToken = data.login.token;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("userId", userId);
 
-    const userId = data.login.user.id;
-    const accessToken = data.login.token;
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("userId", userId);
+      if (accessToken) {
+        router.push("/");
+      }
+    } catch (error) {
+      let errorMessage = "Failed to sign in";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
 
-    if (accessToken) {
-      router.push("/");
+      await Swal.fire("I'm sorry", errorMessage, "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 

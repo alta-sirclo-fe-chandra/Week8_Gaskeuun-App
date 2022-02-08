@@ -94,7 +94,7 @@ const EventDetail = () => {
 
   const disableJoinButton = (
     <Button variant="contained" sx={{ bgcolor: bgblue }} disabled>
-      Join Free
+      Event Ended
     </Button>
   );
 

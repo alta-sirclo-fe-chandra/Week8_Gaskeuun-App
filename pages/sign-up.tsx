@@ -4,6 +4,7 @@ import { useRef, FormEvent, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Box, FormLabel, Grid, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
+import Swal from "sweetalert2";
 
 import { fontSize, mainContent, linkStyle } from "../styles/signStyle";
 import { button, CustomTextField } from "../styles/formStyle";
@@ -35,21 +36,30 @@ const SignUp = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    const name = nameRef.current?.value;
-    const email = emailRef.current?.value;
-    const password = passwordRef.current?.value;
+    try {
+      const name = nameRef.current?.value;
+      const email = emailRef.current?.value;
+      const password = passwordRef.current?.value;
 
-    const { data } = await signUp({ variables: { name, email, password } });
+      const { data } = await signUp({ variables: { name, email, password } });
 
-    setIsLoading(false);
+      const userId = data.createUser.user.id;
+      const accessToken = data.createUser.token;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("userId", userId);
 
-    const userId = data.createUser.user.id;
-    const accessToken = data.createUser.token;
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("userId", userId);
+      if (accessToken) {
+        router.push("/");
+      }
+    } catch (error) {
+      let errorMessage = "Failed to login";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
 
-    if (accessToken) {
-      router.push("/");
+      await Swal.fire("I'm sorry", errorMessage, "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
