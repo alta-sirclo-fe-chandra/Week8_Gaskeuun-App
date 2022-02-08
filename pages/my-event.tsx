@@ -17,6 +17,7 @@ import Link from "next/link";
 import HeadPage from "../components/head";
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
+import EmptyList from "../components/emptyList";
 
 const Home = () => {
   const [page, setPage] = useState(1);
@@ -77,40 +78,44 @@ const Home = () => {
           </Grid>
           <Stack divider={<Divider />}>
             {data &&
-              data.getEventJoinedByUser.event.map(
-                (item: any, index: number) => (
-                  <Grid
-                    key={index}
-                    container
-                    justifyContent="space-evenly"
-                    sx={{ py: 3 }}
-                  >
-                    <Grid item xs={10} sm={5} md={4} sx={{ px: 3 }}>
-                      <Image
-                        src={item.imageUrl}
-                        alt={`${item.id}`}
-                        width={"100%"}
-                        height={"70%"}
-                        layout="responsive"
-                      ></Image>
+              (data.getEventJoinedByUser.event[0] ? (
+                data.getEventJoinedByUser.event.map(
+                  (item: any, index: number) => (
+                    <Grid
+                      key={index}
+                      container
+                      justifyContent="space-evenly"
+                      sx={{ py: 3 }}
+                    >
+                      <Grid item xs={10} sm={5} md={4} sx={{ px: 3 }}>
+                        <Image
+                          src={item.imageUrl}
+                          alt={`${item.id}`}
+                          width={"100%"}
+                          height={"70%"}
+                          layout="responsive"
+                        ></Image>
+                      </Grid>
+                      <Grid item xs={10} sm={6} md={5}>
+                        <p>{moment(item.date).format("dddd MMM Do YYYY")}</p>
+                        <Link href={`/${item.id}`}>
+                          <a>
+                            <Typography
+                              variant="h4"
+                              sx={{ mb: 5, textTransform: "capitalize" }}
+                            >
+                              {item.title}
+                            </Typography>
+                          </a>
+                        </Link>
+                        <p>Hosted by {item.host}</p>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={10} sm={6} md={5}>
-                      <p>{moment(item.date).format("dddd MMM Do YYYY")}</p>
-                      <Link href={`/${item.id}`}>
-                        <a>
-                          <Typography
-                            variant="h4"
-                            sx={{ mb: 5, textTransform: "capitalize" }}
-                          >
-                            {item.title}
-                          </Typography>
-                        </a>
-                      </Link>
-                      <p>Hosted by {item.host}</p>
-                    </Grid>
-                  </Grid>
+                  )
                 )
-              )}
+              ) : (
+                <EmptyList />
+              ))}
           </Stack>
           {data && (
             <Stack direction="row" justifyContent="end" sx={{ my: 4 }}>

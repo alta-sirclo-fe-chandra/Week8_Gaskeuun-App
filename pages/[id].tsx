@@ -140,7 +140,9 @@ const EventDetail = () => {
                 <Box
                   sx={{
                     height: "70vmin",
-                    px: 10,
+                    px: 2,
+                    display: "block",
+                    alignItems: "center",
                   }}
                 >
                   <Image
@@ -260,7 +262,7 @@ const EventDetail = () => {
                 {data.getEvent.Comments &&
                   data.getEvent.Comments.map((item: comment) => (
                     <Grid container key={item.id} spacing={2} sx={{ my: 3 }}>
-                      <Grid item lg={1}>
+                      <Grid item xs={2} sm={1}>
                         <Avatar
                           sx={{
                             bgcolor: bgnavy,
@@ -271,7 +273,7 @@ const EventDetail = () => {
                           {item.user.name[0]}
                         </Avatar>
                       </Grid>
-                      <Grid item lg={11}>
+                      <Grid item xs={10} sm={11}>
                         <Stack>
                           <Stack direction="row" justifyContent="space-between">
                             <Typography
