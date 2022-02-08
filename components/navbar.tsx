@@ -83,6 +83,7 @@ const Navbar = () => {
       setIsLoggedIn(false);
       localStorage.removeItem("accessToken");
       localStorage.removeItem("userId");
+      router.push("/");
     }
   };
 
