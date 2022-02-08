@@ -10,7 +10,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../layouts";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -27,6 +27,14 @@ import { CREATE_COMMENT, CREATE_PARTICIPANT } from "../libs/mutations";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
 
+const checkIfEventPassed = (date: string) => {
+  const eventDateTime = new Date(date).getTime();
+  const todayDateTime = new Date().getTime();
+  const passedEvent = eventDateTime < todayDateTime;
+
+  return passedEvent;
+};
+
 const EventDetail = () => {
   const [comment, setComment] = useState("");
   const [createParticipant] = useMutation(CREATE_PARTICIPANT);
@@ -39,9 +47,14 @@ const EventDetail = () => {
     variables: { id },
   });
 
-  console.log(id);
-
   const handleJoin = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (!accessToken) {
+      router.push("sign-in");
+      return;
+    }
+
     await createParticipant({
       variables: {
         eventId: id,
@@ -65,6 +78,18 @@ const EventDetail = () => {
       setComment("");
     });
   };
+
+  const joinButton = (
+    <Button variant="contained" sx={{ bgcolor: bgblue }} onClick={handleJoin}>
+      Join Free
+    </Button>
+  );
+
+  const disableJoinButton = (
+    <Button variant="contained" sx={{ bgcolor: bgblue }} disabled>
+      Join Free
+    </Button>
+  );
 
   return (
     <>
@@ -98,13 +123,9 @@ const EventDetail = () => {
                 </Stack>
               </Grid>
               <Grid item sm={3} textAlign="end">
-                <Button
-                  variant="contained"
-                  sx={{ bgcolor: bgblue }}
-                  onClick={handleJoin}
-                >
-                  Join Free
-                </Button>
+                {checkIfEventPassed(data.getEvent.date)
+                  ? disableJoinButton
+                  : joinButton}
               </Grid>
 
               {/* Image */}
