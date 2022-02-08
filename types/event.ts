@@ -31,7 +31,7 @@ interface event {
   date: Date;
   description: string;
   location: string;
-  image: string
+  imageUrl: string
   participants: participants[]
   Comments: comment[]
 }

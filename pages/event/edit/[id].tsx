@@ -130,7 +130,7 @@ const Edit = ({ event }: Event) => {
                     <CustomTextField
                       id="image"
                       name="image"
-                      defaultValue={event.image}
+                      defaultValue={event.imageUrl}
                       inputRef={imageRef}
                     />
                   </Box>

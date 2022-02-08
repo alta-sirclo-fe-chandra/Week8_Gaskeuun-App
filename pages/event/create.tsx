@@ -25,6 +25,7 @@ import {
 import { CREATE_EVENT } from "../../libs/mutations";
 import { useMutation } from "@apollo/client";
 import Swal from "sweetalert2";
+import HeadPage from "../../components/head";
 
 const theme = createTheme();
 
@@ -146,159 +147,162 @@ const Create = () => {
   };
 
   return (
-    <Layout>
-      <Box sx={outerContainer}>
-        <Box sx={innerContainer}>
-          <Typography variant="h5" color={navy.color} mb={3}>
-            Create Event
-          </Typography>
+    <>
+      <HeadPage />
+      <Layout>
+        <Box sx={outerContainer}>
+          <Box sx={innerContainer}>
+            <Typography variant="h5" color={navy.color} mb={3}>
+              Create Event
+            </Typography>
 
-          <Box component="form" onSubmit={handleSubmit} pb={5}>
-            {/* untuk image */}
-            <Grid container>
-              <Grid item xs={12} sx={gridItemMargin}>
-                <Box sx={itemContainer}>
-                  <FormLabel sx={label} required={true}>
-                    Image
-                  </FormLabel>
-                  <CustomTextField
-                    required
-                    id="image"
-                    name="image"
-                    placeholder="https://source.unsplash.com/random"
-                    inputRef={imageRef}
-                  />
-                </Box>
-              </Grid>
-            </Grid>
-
-            {/* untuk title */}
-            <Grid container>
-              <Grid item xs={12} sx={gridItemMargin}>
-                <Box sx={itemContainer}>
-                  <FormLabel sx={label} required={true}>
-                    Title
-                  </FormLabel>
-                  <CustomTextField
-                    required
-                    id="title"
-                    name="title"
-                    placeholder="Baking Brownies"
-                    inputRef={titleRef}
-                  />
-                </Box>
-              </Grid>
-            </Grid>
-
-            {/* utk category dan hostedby */}
-            <Grid container spacing={isMobile ? 0 : 4}>
-              <Grid item xs={12} md={6} sx={gridItemMargin}>
-                <Box sx={itemContainer}>
-                  <FormLabel sx={label} required={true}>
-                    Category
-                  </FormLabel>
-                  <CustomTextField
-                    required
-                    id="category"
-                    select
-                    value={category}
-                    onChange={handleCategoryChange}
-                  >
-                    {categories.map((category, idx) => (
-                      <MenuItem key={idx} value={category}>
-                        {category}
-                      </MenuItem>
-                    ))}
-                  </CustomTextField>
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6} sx={gridItemMargin}>
-                <Box sx={itemContainer}>
-                  <FormLabel sx={label} required={true}>
-                    Hosted By
-                  </FormLabel>
-                  <CustomTextField
-                    required
-                    id="hostedBy"
-                    name="hostedBy"
-                    placeholder="Brownies Lover"
-                    inputRef={hostedByRef}
-                  />
-                </Box>
-              </Grid>
-            </Grid>
-
-            {/* untuk date/time dan location */}
-            <Grid container spacing={isMobile ? 0 : 4}>
-              <Grid item xs={12} md={6} sx={gridItemMargin}>
-                <Box sx={itemContainer}>
-                  <FormLabel sx={label} required={true}>
-                    Date/Time
-                  </FormLabel>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => (
-                        <CustomTextField {...props} fullWidth />
-                      )}
-                      value={dateTime}
-                      onChange={(newDateTime) => {
-                        setDateTime(newDateTime!);
-                      }}
-                      inputFormat="yyyy-MM-dd HH:mm:ss"
+            <Box component="form" onSubmit={handleSubmit} pb={5}>
+              {/* untuk image */}
+              <Grid container>
+                <Grid item xs={12} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Image
+                    </FormLabel>
+                    <CustomTextField
+                      required
+                      id="image"
+                      name="image"
+                      placeholder="https://source.unsplash.com/random"
+                      inputRef={imageRef}
                     />
-                  </LocalizationProvider>
-                </Box>
+                  </Box>
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={6} sx={gridItemMargin}>
-                <Box sx={itemContainer}>
-                  <FormLabel sx={label} required={true}>
-                    Location
-                  </FormLabel>
-                  <CustomTextField
-                    required
-                    id="location"
-                    name="location"
-                    placeholder="Menara Bidakara, Jakarta"
-                    inputRef={locationRef}
-                  />
-                </Box>
-              </Grid>
-            </Grid>
 
-            {/* untuk description */}
-            <Grid container>
-              <Grid item xs={12} sx={gridItemMargin}>
-                <Box sx={itemContainer}>
-                  <FormLabel sx={label} required={true}>
-                    Description
-                  </FormLabel>
-                  <CustomTextField
-                    id="description"
-                    name="description"
-                    placeholder="Tell people about your event"
-                    multiline
-                    rows={5}
-                    inputRef={descriptionRef}
-                  />
-                </Box>
+              {/* untuk title */}
+              <Grid container>
+                <Grid item xs={12} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Title
+                    </FormLabel>
+                    <CustomTextField
+                      required
+                      id="title"
+                      name="title"
+                      placeholder="Baking Brownies"
+                      inputRef={titleRef}
+                    />
+                  </Box>
+                </Grid>
               </Grid>
-            </Grid>
 
-            <LoadingButton
-              loading={isLoading}
-              loadingIndicator="Loading..."
-              variant="contained"
-              type="submit"
-              size="large"
-              sx={button}
-              fullWidth
-            >
-              Create
-            </LoadingButton>
+              {/* utk category dan hostedby */}
+              <Grid container spacing={isMobile ? 0 : 4}>
+                <Grid item xs={12} md={6} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Category
+                    </FormLabel>
+                    <CustomTextField
+                      required
+                      id="category"
+                      select
+                      value={category}
+                      onChange={handleCategoryChange}
+                    >
+                      {categories.map((category, idx) => (
+                        <MenuItem key={idx} value={category}>
+                          {category}
+                        </MenuItem>
+                      ))}
+                    </CustomTextField>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} md={6} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Hosted By
+                    </FormLabel>
+                    <CustomTextField
+                      required
+                      id="hostedBy"
+                      name="hostedBy"
+                      placeholder="Brownies Lover"
+                      inputRef={hostedByRef}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
+
+              {/* untuk date/time dan location */}
+              <Grid container spacing={isMobile ? 0 : 4}>
+                <Grid item xs={12} md={6} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Date/Time
+                    </FormLabel>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DateTimePicker
+                        renderInput={(props) => (
+                          <CustomTextField {...props} fullWidth />
+                        )}
+                        value={dateTime}
+                        onChange={(newDateTime) => {
+                          setDateTime(newDateTime!);
+                        }}
+                        inputFormat="yyyy-MM-dd HH:mm:ss"
+                      />
+                    </LocalizationProvider>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} md={6} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Location
+                    </FormLabel>
+                    <CustomTextField
+                      required
+                      id="location"
+                      name="location"
+                      placeholder="Menara Bidakara, Jakarta"
+                      inputRef={locationRef}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
+
+              {/* untuk description */}
+              <Grid container>
+                <Grid item xs={12} sx={gridItemMargin}>
+                  <Box sx={itemContainer}>
+                    <FormLabel sx={label} required={true}>
+                      Description
+                    </FormLabel>
+                    <CustomTextField
+                      id="description"
+                      name="description"
+                      placeholder="Tell people about your event"
+                      multiline
+                      rows={5}
+                      inputRef={descriptionRef}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
+
+              <LoadingButton
+                loading={isLoading}
+                loadingIndicator="Loading..."
+                variant="contained"
+                type="submit"
+                size="large"
+                sx={button}
+                fullWidth
+              >
+                Create
+              </LoadingButton>
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Layout>
+      </Layout>
+    </>
   );
 };
 
