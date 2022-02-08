@@ -11,7 +11,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Image from "next/image";
-import Logo from "../assets/logo.svg";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useScrollTrigger } from "@mui/material";
@@ -96,7 +95,13 @@ const Navbar = () => {
               >
                 <Link href="/">
                   <a>
-                    <Image alt="logo" src={Logo} height="50" width="50" />
+                    <Image
+                      alt="logo"
+                      width={50}
+                      height={50}
+                      src="/logo.svg"
+                      priority
+                    />
                   </a>
                 </Link>
               </Box>

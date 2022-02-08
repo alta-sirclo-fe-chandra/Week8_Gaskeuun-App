@@ -9,7 +9,6 @@ import {
   Pagination,
 } from "@mui/material";
 import Layout from "../layouts";
-import Banner from "../assets/banner.svg";
 import Image from "next/image";
 import { BannerSmStyle, BannerStyle } from "../styles/homeStyle";
 import { GET_JOINED_EVENTS } from "../libs/queries";
@@ -48,11 +47,13 @@ const Home = () => {
           >
             <Box sx={{ display: { xs: "none", md: "block" } }}>
               <Image
-                src={Banner}
+                src="/banner.svg"
                 alt="banner"
+                width="100%"
+                height="35%"
                 layout="responsive"
                 priority
-              ></Image>
+              />
               <Box sx={BannerStyle}>
                 <h1>
                   <span style={{ fontWeight: "lighter" }}>Welcome to</span>

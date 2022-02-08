@@ -11,7 +11,6 @@ import {
   Pagination,
 } from "@mui/material";
 import Layout from "../layouts";
-import Banner from "../assets/banner.svg";
 import Image from "next/image";
 import { BannerSmStyle, BannerStyle } from "../styles/homeStyle";
 import { searchForm, searchFormLg } from "../styles/formStyle";
@@ -55,6 +54,7 @@ const Home = () => {
   };
 
   const handleSubmit = async (search?: any) => {
+    setPage(1);
     if (search) {
       setParam(search);
     } else {
@@ -74,86 +74,88 @@ const Home = () => {
   return (
     <>
       <HeadPage />
-      {data && (
-        <Layout>
-          <Container maxWidth="lg">
-            <Grid
-              container
-              sx={{
-                display: "block",
-                height: 440,
-                pb: 5,
-              }}
-            >
-              <Box sx={{ display: { xs: "none", md: "block" } }}>
-                <Image
-                  src={Banner}
-                  alt="banner"
-                  layout="responsive"
-                  priority
-                ></Image>
-                <Box sx={BannerStyle}>
-                  <h1>
-                    <span style={{ fontWeight: "lighter" }}>Welcome to</span>
-                    <br />
-                    Gaskeuun
-                  </h1>
-                  <InputBase
-                    id="searchLg"
-                    sx={searchFormLg}
-                    autoFocus
-                    placeholder="search"
-                    inputRef={searchLg}
-                    onKeyPress={handleKeyPressLg}
-                  />
-                </Box>
-              </Box>
-              <Stack
-                justifyContent="center"
-                alignItems="center"
-                spacing={2}
-                sx={BannerSmStyle}
-              >
+      <Layout>
+        <Container maxWidth="lg">
+          <Grid
+            container
+            sx={{
+              display: "block",
+              height: 440,
+              pb: 5,
+            }}
+          >
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <Image
+                src="/banner.svg"
+                alt="banner"
+                width="100%"
+                height="35%"
+                layout="responsive"
+                priority
+              />
+              <Box sx={BannerStyle}>
                 <h1>
                   <span style={{ fontWeight: "lighter" }}>Welcome to</span>
                   <br />
                   Gaskeuun
                 </h1>
                 <InputBase
-                  id="search"
-                  sx={searchForm}
+                  id="searchLg"
+                  sx={searchFormLg}
                   autoFocus
                   placeholder="search"
-                  inputRef={searchSm}
-                  onKeyPress={handleKeyPressSm}
+                  inputRef={searchLg}
+                  onKeyPress={handleKeyPressLg}
                 />
-              </Stack>
-            </Grid>
-            <Stack direction="row" justifyContent="center" sx={{ mb: 5 }}>
-              <Stack direction="row" spacing={2} sx={{ overflow: "auto" }}>
-                <Button
-                  variant={filter === "" ? "contained" : "outlined"}
-                  onClick={() => {
-                    handleSubmit();
-                    setFilter("");
-                  }}
-                >
-                  All
-                </Button>
-                {category.map((item: string, index: number) => (
-                  <Button
-                    key={index}
-                    variant={filter === item ? "contained" : "outlined"}
-                    sx={{ px: { xs: 7, md: 3 } }}
-                    onClick={() => handleFilter(item)}
-                  >
-                    {item}
-                  </Button>
-                ))}
-              </Stack>
+              </Box>
+            </Box>
+            <Stack
+              justifyContent="center"
+              alignItems="center"
+              spacing={2}
+              sx={BannerSmStyle}
+            >
+              <h1>
+                <span style={{ fontWeight: "lighter" }}>Welcome to</span>
+                <br />
+                Gaskeuun
+              </h1>
+              <InputBase
+                id="search"
+                sx={searchForm}
+                autoFocus
+                placeholder="search"
+                inputRef={searchSm}
+                onKeyPress={handleKeyPressSm}
+              />
             </Stack>
-            <Stack divider={<Divider />}>
-              {data.getEventParam.event.map((item: any) => (
+          </Grid>
+          <Stack direction="row" justifyContent="center" sx={{ mb: 5 }}>
+            <Stack direction="row" spacing={2} sx={{ overflow: "auto" }}>
+              <Button
+                variant={filter === "" ? "contained" : "outlined"}
+                onClick={() => {
+                  handleSubmit();
+                  setFilter("");
+                }}
+              >
+                All
+              </Button>
+              {category.map((item: string, index: number) => (
+                <Button
+                  key={index}
+                  variant={filter === item ? "contained" : "outlined"}
+                  sx={{ px: { xs: 7, md: 3 } }}
+                  onClick={() => handleFilter(item)}
+                >
+                  {item}
+                </Button>
+              ))}
+            </Stack>
+          </Stack>
+          <Stack divider={<Divider />}>
+            {data &&
+              data.getEventParam.event.map((item: any) => (
                 <Grid
                   key={item.id}
                   container
@@ -199,7 +201,8 @@ const Home = () => {
                   </Grid>
                 </Grid>
               ))}
-            </Stack>
+          </Stack>
+          {data && (
             <Stack direction="row" justifyContent="end" sx={{ my: 4 }}>
               <Pagination
                 count={data.getEventParam.totalPage}
@@ -207,9 +210,9 @@ const Home = () => {
                 onChange={handleChange}
               />
             </Stack>
-          </Container>
-        </Layout>
-      )}
+          )}
+        </Container>
+      </Layout>
     </>
   );
 };
