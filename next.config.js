@@ -6,6 +6,9 @@ const nextConfig = {
       "cdn-icons-png.flaticon.com",
       "images.unsplash.com",
       "source.unsplash.com",
+      "static.vecteezy.com",
+      "en.wikipedia.org",
+      "i.picsum.photos",
     ],
   },
 };
