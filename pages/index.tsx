@@ -14,7 +14,7 @@ import Image from "next/image";
 import { BannerSmStyle, BannerStyle } from "../styles/homeStyle";
 import { searchForm, searchFormLg } from "../styles/formStyle";
 import { GET_EVENTS, GET_EVENTS_PARAMS } from "../libs/queries";
-import client from "../libs/apollo-client";
+import client from "../libs/apollo";
 import moment from "moment";
 import Link from "next/link";
 import { KeyboardEvent, useRef } from "react";
@@ -29,7 +29,7 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      events: data.getEvents,
+      events: data.getEvents.event,
     },
   };
 };
@@ -53,13 +53,15 @@ const Home = ({ events }: Events) => {
     }
   };
 
-  const handleSubmit = async (search: any) => {
+  const handleSubmit = async (search?: any) => {
     if (search) {
       const { data } = await client.query({
         query: GET_EVENTS_PARAMS,
         variables: { param: search },
       });
-      data.getEventParam ? setData(data.getEventParam) : setData([]);
+      data.getEventParam.event
+        ? setData(data.getEventParam.event)
+        : setData([]);
     } else {
       setData(events);
     }

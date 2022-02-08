@@ -65,4 +65,60 @@ export const CREATE_EVENT = gql`
       message
     }
   }
-`;
+`
+export const EDIT_EVENT = gql`
+  mutation(
+    $eventId: Int!
+    $categoryId: Int!
+    $title: String!
+    $host: String!
+    $date: String!
+    $location: String!
+    $description: String!
+    $imageUrl: String!
+  ){
+    updateEvent(eventId: $eventId, edit:{
+        categoryId: $categoryId
+        title: $title
+        host: $host
+        date: $date
+        location: $location
+        description: $description
+        imageUrl: $imageUrl
+    })
+    {
+    code
+    message
+    }
+  }
+`
+
+export const DELETE_EVENT = gql`
+  mutation($eventId: Int!){
+    deleteEvent(eventId: $eventId)
+    {
+    code
+    message
+    }
+  }
+`
+
+export const CREATE_PARTICIPANT = gql`
+  mutation($eventId: Int!) {
+    createParticipant(eventId: $eventId)
+    {
+        code
+        message
+    }
+  }
+`
+
+export const CREATE_COMMENT = gql`
+  mutation($eventId: Int!, $comment: String!) {
+    createComment(eventId: $eventId, comment: $comment)
+    {
+        code
+        message
+    }
+  }
+`

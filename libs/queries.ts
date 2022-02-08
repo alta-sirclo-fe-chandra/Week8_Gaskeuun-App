@@ -1,16 +1,19 @@
 import { gql } from "@apollo/client";
 
 export const GET_EVENTS = gql`
-  query {
-    getEvents {
-      id
-      userId
-      categoryId
-      title
-      host
-      date
-      description
-      location
+  query{
+    getEvents{
+        event{
+            id
+            userId
+            categoryId
+            title
+            host
+            date
+            location
+            imageUrl
+        }
+        totalPage
     }
   }
 `;
@@ -18,17 +21,38 @@ export const GET_EVENTS = gql`
 export const GET_EVENTS_PARAMS = gql`
   query ($param: String!) {
     getEventParam(param: $param) {
-      id
-      userId
-      categoryId
-      title
-      host
-      date
-      description
-      location
+      event{
+        id
+        userId
+        categoryId
+        title
+        host
+        date
+        description
+        location
+      }
+      totalPage
     }
   }
 `;
+
+export const GET_MY_EVENT = gql`
+  query{
+    getMyEvent{
+      event{
+        id
+        userId
+        categoryId
+        title
+        host
+        date
+        location
+        imageUrl
+    }
+    totalPage
+    }
+  }
+`
 
 export const GET_EVENT_BY_ID = gql`
   query ($id: Int!) {
@@ -41,9 +65,45 @@ export const GET_EVENT_BY_ID = gql`
       date
       description
       location
+      participants{
+        id
+        name
+        email
+        imageUrl
+      }
+      Comments{
+          id
+          comment
+          user{
+              id
+              name
+              email
+              imageUrl
+          }
+          updatedAt
+      }
     }
   }
-`;
+`
+
+export const GET_JOINED_EVENTS = gql`
+  query{
+    getEventJoinedByUser{
+      event{
+        id
+        userId
+        categoryId
+        title
+        host
+        date
+        location
+        imageUrl
+    }
+    totalPage
+    }
+  }
+`
+
 export const SIGN_IN = gql`
   query SIGN_IN($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -69,4 +129,18 @@ export const GET_USER = gql`
       imageUrl
     }
   }
-`;
+`
+
+export const GET_PARTICIPANTS = gql`
+  query($eventId: Int!) {
+    getParticipants(eventId: $eventId) {
+        participants {
+            id
+            name
+            email 
+            imageUrl
+        }
+        totalPage
+    }
+  }
+` 
