@@ -24,6 +24,7 @@ import { DELETE_EVENT } from "../../libs/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
+import EmptyList from "../../components/emptyList";
 
 const Home = () => {
   const [page, setPage] = useState(1);
@@ -110,52 +111,56 @@ const Home = () => {
           </Box>
           <Stack divider={<Divider />}>
             {data &&
-              data.getMyEvent.event.map((item: any) => (
-                <Grid
-                  key={item.id}
-                  container
-                  justifyContent="space-evenly"
-                  sx={{ py: 3 }}
-                >
-                  <Grid item xs={10} sm={5} md={4} sx={{ px: 3 }}>
-                    <Image
-                      src={item.imageUrl}
-                      alt={`${item.id}`}
-                      width={"100%"}
-                      height={"70%"}
-                      layout="responsive"
-                    ></Image>
+              (data.getMyEvent.event[0] ? (
+                data.getMyEvent.event.map((item: any) => (
+                  <Grid
+                    key={item.id}
+                    container
+                    justifyContent="space-evenly"
+                    sx={{ py: 3 }}
+                  >
+                    <Grid item xs={10} sm={5} md={4} sx={{ px: 3 }}>
+                      <Image
+                        src={item.imageUrl}
+                        alt={`${item.id}`}
+                        width={"100%"}
+                        height={"70%"}
+                        layout="responsive"
+                      ></Image>
+                    </Grid>
+                    <Grid item xs={10} sm={6} md={5}>
+                      <p>{moment(item.date).format("dddd MMM Do YYYY")}</p>
+                      <Link href={`/${item.id}`}>
+                        <a>
+                          <Typography
+                            variant="h4"
+                            sx={{ mb: 5, textTransform: "capitalize" }}
+                          >
+                            {item.title}
+                          </Typography>
+                        </a>
+                      </Link>
+                      <p>Hosted by {item.host}</p>
+                    </Grid>
+                    <Grid item lg={1} sx={{ textAlign: "center" }}>
+                      <Button
+                        variant="outlined"
+                        color="warning"
+                        onClick={() => handleEdit(item.id)}
+                      >
+                        Edit
+                      </Button>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={10} sm={6} md={5}>
-                    <p>{moment(item.date).format("dddd MMM Do YYYY")}</p>
-                    <Link href={`/${item.id}`}>
-                      <a>
-                        <Typography
-                          variant="h4"
-                          sx={{ mb: 5, textTransform: "capitalize" }}
-                        >
-                          {item.title}
-                        </Typography>
-                      </a>
-                    </Link>
-                    <p>Hosted by {item.host}</p>
-                  </Grid>
-                  <Grid item lg={1} sx={{ textAlign: "center" }}>
-                    <Button
-                      variant="outlined"
-                      color="warning"
-                      onClick={() => handleEdit(item.id)}
-                    >
-                      Edit
-                    </Button>
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
+                ))
+              ) : (
+                <EmptyList />
               ))}
           </Stack>
           {data && (

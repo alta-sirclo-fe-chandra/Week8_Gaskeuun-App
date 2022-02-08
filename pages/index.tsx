@@ -21,6 +21,7 @@ import { KeyboardEvent, useEffect, useRef } from "react";
 import { useState } from "react";
 import HeadPage from "../components/head";
 import { useQuery } from "@apollo/client";
+import EmptyList from "../components/emptyList";
 
 const Home = () => {
   const [page, setPage] = useState(1);
@@ -154,7 +155,7 @@ const Home = () => {
             </Stack>
           </Stack>
           <Stack divider={<Divider />}>
-            {data &&
+            {data && data.getEventParam.event[0] ? (
               data.getEventParam.event.map((item: any) => (
                 <Grid
                   key={item.id}
@@ -186,7 +187,10 @@ const Home = () => {
                     <p>Hosted by {item.host}</p>
                   </Grid>
                 </Grid>
-              ))}
+              ))
+            ) : (
+              <EmptyList />
+            )}
           </Stack>
           {data && (
             <Stack direction="row" justifyContent="end" sx={{ my: 4 }}>
