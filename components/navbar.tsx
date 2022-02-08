@@ -25,7 +25,14 @@ interface Props {
 const Navbar = () => {
   const router = useRouter();
   const authContext = React.useContext(AuthContext);
-  const isLoggedIn = authContext.isAuth;
+  let isLoggedIn = authContext.isAuth;
+
+  if (typeof window !== "undefined") {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      isLoggedIn = true;
+    }
+  }
 
   const pages = [
     ["Home", "/"],
