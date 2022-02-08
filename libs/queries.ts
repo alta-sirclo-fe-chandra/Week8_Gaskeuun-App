@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_EVENTS = gql`
-  query{
-    getEvents{
+  query($page: Int!){
+    getEvents(page: $page){
         event{
             id
             userId
@@ -19,8 +19,8 @@ export const GET_EVENTS = gql`
 `;
 
 export const GET_EVENTS_PARAMS = gql`
-  query ($param: String!) {
-    getEventParam(param: $param) {
+  query ($param: String!, $page: Int!) {
+    getEventParam(param: $param, page: $page) {
       event{
         id
         userId
@@ -37,8 +37,8 @@ export const GET_EVENTS_PARAMS = gql`
 `;
 
 export const GET_MY_EVENT = gql`
-  query{
-    getMyEvent{
+  query($page: Int!){
+    getMyEvent(page: $page){
       event{
         id
         userId
@@ -87,8 +87,8 @@ export const GET_EVENT_BY_ID = gql`
 `
 
 export const GET_JOINED_EVENTS = gql`
-  query{
-    getEventJoinedByUser{
+  query($page: Int!){
+    getEventJoinedByUser(page: $page){
       event{
         id
         userId
@@ -98,8 +98,8 @@ export const GET_JOINED_EVENTS = gql`
         date
         location
         imageUrl
-    }
-    totalPage
+      }
+      totalPage
     }
   }
 `

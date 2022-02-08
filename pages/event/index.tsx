@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Box,
   Container,
@@ -7,6 +8,7 @@ import {
   Typography,
   Divider,
   IconButton,
+  Pagination,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Layout from "../../layouts";
@@ -22,11 +24,19 @@ import { useRouter } from "next/router";
 import { DELETE_EVENT } from "../../libs/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 
 const Home = () => {
-  const { data } = useQuery(GET_MY_EVENT);
+  const [page, setPage] = useState(1);
+  const { data, refetch } = useQuery(GET_MY_EVENT, {
+    variables: { page },
+  });
   const router = useRouter();
   const [deleteEvent] = useMutation(DELETE_EVENT);
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const handleEdit = (id: number) => {
     router.push(`/event/edit/${id}`);
@@ -39,67 +49,67 @@ const Home = () => {
       },
     }).then(() => {
       Swal.fire("Success", "Your event has been deleted", "success");
-      refreshData();
+      refetch();
     });
   };
 
-  const refreshData = () => {
-    router.replace(router.asPath);
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
   };
 
   return (
     <>
       <HeadPage />
-      {data && (
-        <Layout>
-          <Container maxWidth="lg">
-            <Grid
-              container
-              sx={{
-                display: "block",
-                height: 440,
-                pb: 5,
-              }}
-            >
-              <Box sx={{ display: { xs: "none", md: "block" } }}>
-                <Image
-                  src={Banner}
-                  alt="banner"
-                  layout="responsive"
-                  priority
-                ></Image>
-                <Box sx={BannerStyle}>
-                  <h1>
-                    <span style={{ fontWeight: "lighter" }}>Welcome to</span>
-                    <br />
-                    Gaskeuun
-                  </h1>
-                </Box>
-              </Box>
-              <Stack
-                justifyContent="center"
-                alignItems="center"
-                spacing={2}
-                sx={BannerSmStyle}
-              >
+      <Layout>
+        <Container maxWidth="lg">
+          <Grid
+            container
+            sx={{
+              display: "block",
+              height: 440,
+              pb: 5,
+            }}
+          >
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <Image
+                src={Banner}
+                alt="banner"
+                layout="responsive"
+                priority
+              ></Image>
+              <Box sx={BannerStyle}>
                 <h1>
                   <span style={{ fontWeight: "lighter" }}>Welcome to</span>
                   <br />
                   Gaskeuun
                 </h1>
-              </Stack>
-            </Grid>
-            <Box sx={{ textAlign: "end" }}>
-              <Button
-                variant="contained"
-                sx={button}
-                onClick={() => router.push("/event/create")}
-              >
-                Add Event
-              </Button>
+              </Box>
             </Box>
-            <Stack divider={<Divider />}>
-              {data.getMyEvent.event.map((item: any) => (
+            <Stack
+              justifyContent="center"
+              alignItems="center"
+              spacing={2}
+              sx={BannerSmStyle}
+            >
+              <h1>
+                <span style={{ fontWeight: "lighter" }}>Welcome to</span>
+                <br />
+                Gaskeuun
+              </h1>
+            </Stack>
+          </Grid>
+          <Box sx={{ textAlign: "end" }}>
+            <Button
+              variant="contained"
+              sx={button}
+              onClick={() => router.push("/event/create")}
+            >
+              Add Event
+            </Button>
+          </Box>
+          <Stack divider={<Divider />}>
+            {data &&
+              data.getMyEvent.event.map((item: any) => (
                 <Grid
                   key={item.id}
                   container
@@ -160,10 +170,18 @@ const Home = () => {
                   </Grid>
                 </Grid>
               ))}
+          </Stack>
+          {data && (
+            <Stack direction="row" justifyContent="end" sx={{ my: 4 }}>
+              <Pagination
+                count={data.getMyEvent.totalPage}
+                page={page}
+                onChange={handleChange}
+              />
             </Stack>
-          </Container>
-        </Layout>
-      )}
+          )}
+        </Container>
+      </Layout>
     </>
   );
 };
