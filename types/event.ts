@@ -2,6 +2,7 @@ import {User} from "./User"
 
 export type Events = {
   events: event[];
+  totalPage: number
 };
 
 export type Event = {

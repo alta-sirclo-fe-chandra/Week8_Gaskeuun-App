@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { FormEvent, useState, ChangeEvent, useRef } from "react";
 import { DateTimePicker, LoadingButton, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -23,6 +24,7 @@ import {
 } from "../../styles/createUpdateStyle";
 import { CREATE_EVENT } from "../../libs/mutations";
 import { useMutation } from "@apollo/client";
+import Swal from "sweetalert2";
 
 const theme = createTheme();
 
@@ -53,6 +55,7 @@ const categories = [
 ];
 
 const Create = () => {
+  const router = useRouter();
   const imageRef = useRef<HTMLInputElement>();
   const titleRef = useRef<HTMLInputElement>();
   const hostedByRef = useRef<HTMLInputElement>();
@@ -129,6 +132,14 @@ const Create = () => {
         description,
         imageUrl,
       },
+    }).then(() => {
+      Swal.fire("Success!", "Your Event has been created.", "success").then(
+        (res) => {
+          if (res.isConfirmed) {
+            router.replace("/event");
+          }
+        }
+      );
     });
 
     setIsLoading(false);

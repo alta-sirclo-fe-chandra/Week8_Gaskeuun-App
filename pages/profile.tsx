@@ -19,6 +19,7 @@ import {
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_USER } from "../libs/queries";
 import { EDIT_USER } from "../libs/mutations";
+import Swal from "sweetalert2";
 
 const Profile = () => {
   const nameRef = useRef<HTMLInputElement>();
@@ -34,7 +35,7 @@ const Profile = () => {
     userId = Number(localStorage.getItem("userId"));
   }
 
-  const { data } = useQuery(GET_USER, {
+  const { data, refetch } = useQuery(GET_USER, {
     variables: { userId },
   });
 
@@ -58,6 +59,9 @@ const Profile = () => {
         password: newPassword,
         imageUrl: newProfilePicture,
       },
+    }).then(() => {
+      Swal.fire("Success", "Your profile has been updated", "success");
+      refetch();
     });
 
     setIsLoading(false);

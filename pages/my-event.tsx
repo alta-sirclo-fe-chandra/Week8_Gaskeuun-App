@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Box,
   Container,
@@ -5,6 +6,7 @@ import {
   Stack,
   Typography,
   Divider,
+  Pagination,
 } from "@mui/material";
 import Layout from "../layouts";
 import Banner from "../assets/banner.svg";
@@ -15,54 +17,66 @@ import moment from "moment";
 import Link from "next/link";
 import HeadPage from "../components/head";
 import { useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
 
 const Home = () => {
-  const { data } = useQuery(GET_JOINED_EVENTS);
+  const [page, setPage] = useState(1);
+  const { data, refetch } = useQuery(GET_JOINED_EVENTS, {
+    variables: { page },
+  });
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
 
   return (
     <>
       <HeadPage />
-      {data && (
-        <Layout>
-          <Container maxWidth="lg">
-            <Grid
-              container
-              sx={{
-                display: "block",
-                height: 440,
-                pb: 5,
-              }}
-            >
-              <Box sx={{ display: { xs: "none", md: "block" } }}>
-                <Image
-                  src={Banner}
-                  alt="banner"
-                  layout="responsive"
-                  priority
-                ></Image>
-                <Box sx={BannerStyle}>
-                  <h1>
-                    <span style={{ fontWeight: "lighter" }}>Welcome to</span>
-                    <br />
-                    Gaskeuun
-                  </h1>
-                </Box>
-              </Box>
-              <Stack
-                justifyContent="center"
-                alignItems="center"
-                spacing={2}
-                sx={BannerSmStyle}
-              >
+      <Layout>
+        <Container maxWidth="lg">
+          <Grid
+            container
+            sx={{
+              display: "block",
+              height: 440,
+              pb: 5,
+            }}
+          >
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <Image
+                src={Banner}
+                alt="banner"
+                layout="responsive"
+                priority
+              ></Image>
+              <Box sx={BannerStyle}>
                 <h1>
                   <span style={{ fontWeight: "lighter" }}>Welcome to</span>
                   <br />
                   Gaskeuun
                 </h1>
-              </Stack>
-            </Grid>
-            <Stack divider={<Divider />}>
-              {data.getEventJoinedByUser.event.map(
+              </Box>
+            </Box>
+            <Stack
+              justifyContent="center"
+              alignItems="center"
+              spacing={2}
+              sx={BannerSmStyle}
+            >
+              <h1>
+                <span style={{ fontWeight: "lighter" }}>Welcome to</span>
+                <br />
+                Gaskeuun
+              </h1>
+            </Stack>
+          </Grid>
+          <Stack divider={<Divider />}>
+            {data &&
+              data.getEventJoinedByUser.event.map(
                 (item: any, index: number) => (
                   <Grid
                     key={index}
@@ -110,10 +124,18 @@ const Home = () => {
                   </Grid>
                 )
               )}
+          </Stack>
+          {data && (
+            <Stack direction="row" justifyContent="end" sx={{ my: 4 }}>
+              <Pagination
+                count={data.getEventJoinedByUser.totalPage}
+                page={page}
+                onChange={handleChange}
+              />
             </Stack>
-          </Container>
-        </Layout>
-      )}
+          )}
+        </Container>
+      </Layout>
     </>
   );
 };
