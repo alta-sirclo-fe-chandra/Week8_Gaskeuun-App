@@ -62,6 +62,7 @@ const Navbar = () => {
     } else {
       router.reload();
       localStorage.removeItem("accessToken");
+      localStorage.removeItem("userId");
     }
   };
 
