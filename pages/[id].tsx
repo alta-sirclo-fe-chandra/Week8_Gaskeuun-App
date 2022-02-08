@@ -26,6 +26,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_COMMENT, CREATE_PARTICIPANT } from "../libs/mutations";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const checkIfEventPassed = (date: string) => {
   const eventDateTime = new Date(date).getTime();
@@ -68,6 +69,12 @@ const EventDetail = () => {
   };
 
   const handleComment = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      router.push("sign-in");
+      return;
+    }
+
     await createComment({
       variables: {
         eventId: id,
@@ -133,10 +140,17 @@ const EventDetail = () => {
                 <Box
                   sx={{
                     height: "70vmin",
-                    bgcolor: "text.secondary",
-                    borderRadius: 10,
+                    px: 10,
                   }}
-                ></Box>
+                >
+                  <Image
+                    src={data.getEvent.imageUrl}
+                    alt={`${data.getEvent.id}`}
+                    width={"100%"}
+                    height={"60%"}
+                    layout="responsive"
+                  ></Image>
+                </Box>
               </Grid>
 
               {/* Detail Event */}

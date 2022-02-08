@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -16,6 +17,9 @@ import Link from "next/link";
 import { useScrollTrigger } from "@mui/material";
 import { button } from "../styles/formStyle";
 import AuthContext from "../store/AuthContext";
+import { useQuery } from "@apollo/client";
+import { GET_USER } from "../libs/queries";
+import { bgnavy } from "../styles/colorStyle";
 
 interface Props {
   window?: () => Window;
@@ -25,14 +29,24 @@ interface Props {
 const Navbar = () => {
   const router = useRouter();
   const authContext = React.useContext(AuthContext);
-  let isLoggedIn = authContext.isAuth;
+  const [isLoggedIn, setIsLoggedIn] = React.useState(authContext.isAuth);
+  const [userId, setUserId] = React.useState(0);
 
-  if (typeof window !== "undefined") {
-    const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
-      isLoggedIn = true;
+  const { data, refetch } = useQuery(GET_USER, {
+    variables: { userId },
+  });
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const accessToken = localStorage.getItem("accessToken");
+      const userId = localStorage.getItem("userId");
+      if (accessToken) {
+        setIsLoggedIn(true);
+        setUserId(Number(userId));
+        refetch();
+      }
     }
-  }
+  }, [isLoggedIn]);
 
   const pages = [
     ["Home", "/"],
@@ -66,7 +80,7 @@ const Navbar = () => {
     if (item[0] !== "Logout") {
       router.push(item[1]);
     } else {
-      router.reload();
+      setIsLoggedIn(false);
       localStorage.removeItem("accessToken");
       localStorage.removeItem("userId");
     }
@@ -177,17 +191,21 @@ const Navbar = () => {
                     flexGrow: 1,
                   }}
                 >
-                  <Avatar alt="Customer" />
-                  <Typography
-                    textAlign="center"
-                    sx={{
-                      ml: 1,
-                      color: "black",
-                      display: { xs: "none", md: "block" },
-                    }}
-                  >
-                    Hi, Customer
-                  </Typography>
+                  {data && (
+                    <>
+                      <Avatar alt="Customer" src={data.getUser.imageUrl} />
+                      <Typography
+                        textAlign="center"
+                        sx={{
+                          ml: 1,
+                          color: "black",
+                          display: { xs: "none", md: "block" },
+                        }}
+                      >
+                        Hi, {data.getUser.name}
+                      </Typography>
+                    </>
+                  )}
                 </Box>
                 <Menu
                   sx={{ mt: "45px", ml: { xs: "70%", sm: "85%" } }}

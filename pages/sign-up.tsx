@@ -49,7 +49,7 @@ const SignUp = () => {
     localStorage.setItem("userId", userId);
 
     if (accessToken) {
-      router.reload();
+      router.push("/");
     }
   };
 
