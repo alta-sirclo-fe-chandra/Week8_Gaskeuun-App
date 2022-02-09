@@ -10,7 +10,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Layout from "../layouts";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -18,7 +18,11 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import SendIcon from "@mui/icons-material/Send";
 import { bgblue, bgnavy, navy } from "../styles/colorStyle";
-import { GET_EVENT_BY_ID } from "../libs/queries";
+import {
+  GET_COMMENTS,
+  GET_EVENT_BY_ID,
+  GET_PARTICIPANT_STATUS,
+} from "../libs/queries";
 import { comment, participants } from "../types/event";
 import moment from "moment";
 import HeadPage from "../components/head";
@@ -38,6 +42,7 @@ const checkIfEventPassed = (date: string) => {
 
 const EventDetail = () => {
   const [comment, setComment] = useState("");
+  const [limit, setLimit] = useState(5);
   const [createParticipant] = useMutation(CREATE_PARTICIPANT);
   const [createComment] = useMutation(CREATE_COMMENT);
 
@@ -47,6 +52,20 @@ const EventDetail = () => {
   const { data, refetch } = useQuery(GET_EVENT_BY_ID, {
     variables: { id },
   });
+
+  const { data: status, refetch: refetch_status } = useQuery(
+    GET_PARTICIPANT_STATUS,
+    {
+      variables: { eventId: id },
+    }
+  );
+
+  const { data: data_comment, refetch: refetch_comment } = useQuery(
+    GET_COMMENTS,
+    {
+      variables: { eventId: id, limit },
+    }
+  );
 
   const handleJoin = async () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -64,6 +83,7 @@ const EventDetail = () => {
       .then(() => {
         Swal.fire("Good job!", "Success to join this event", "success");
         refetch();
+        refetch_status();
       })
       .catch((err) => Swal.fire("I'm sorry", `${err}`, "error"));
   };
@@ -81,9 +101,14 @@ const EventDetail = () => {
         comment: comment,
       },
     }).then(() => {
-      refetch();
+      refetch_comment();
       setComment("");
     });
+  };
+
+  const handleLimitComment = () => {
+    setLimit(limit + 5);
+    refetch_comment();
   };
 
   const joinButton = (
@@ -95,6 +120,12 @@ const EventDetail = () => {
   const disableJoinButton = (
     <Button variant="contained" sx={{ bgcolor: bgblue }} disabled>
       Event Ended
+    </Button>
+  );
+
+  const joinedButton = (
+    <Button variant="contained" sx={{ bgcolor: bgblue }} disabled>
+      You Already Join
     </Button>
   );
 
@@ -129,11 +160,15 @@ const EventDetail = () => {
                   </Typography>
                 </Stack>
               </Grid>
-              <Grid item sm={3} textAlign="end">
-                {checkIfEventPassed(data.getEvent.date)
-                  ? disableJoinButton
-                  : joinButton}
-              </Grid>
+              {status && (
+                <Grid item sm={3} textAlign="end">
+                  {checkIfEventPassed(data.getEvent.date)
+                    ? disableJoinButton
+                    : status.getParticipantStatus.status
+                    ? joinedButton
+                    : joinButton}
+                </Grid>
+              )}
 
               {/* Image */}
               <Grid item xs={12}>
@@ -259,42 +294,60 @@ const EventDetail = () => {
                     <SendIcon />
                   </IconButton>
                 </Stack>
-                {data.getEvent.Comments &&
-                  data.getEvent.Comments.map((item: comment) => (
-                    <Grid container key={item.id} spacing={2} sx={{ my: 3 }}>
-                      <Grid item xs={2} sm={1}>
-                        <Avatar
-                          sx={{
-                            bgcolor: bgnavy,
-                            width: 50,
-                            height: 50,
-                          }}
-                        >
-                          {item.user.name[0]}
-                        </Avatar>
-                      </Grid>
-                      <Grid item xs={10} sm={11}>
-                        <Stack>
-                          <Stack direction="row" justifyContent="space-between">
-                            <Typography
-                              variant="h6"
-                              sx={{ textTransform: "capitalize" }}
+                {data_comment &&
+                  [...data_comment.getComments.comments]
+                    .reverse()
+                    .map((item: comment) => (
+                      <Grid container key={item.id} spacing={2} sx={{ my: 3 }}>
+                        <Grid item xs={2} sm={1}>
+                          <Avatar
+                            sx={{
+                              bgcolor: bgnavy,
+                              width: 50,
+                              height: 50,
+                            }}
+                          >
+                            {item.user.name[0]}
+                          </Avatar>
+                        </Grid>
+                        <Grid item xs={10} sm={11}>
+                          <Stack>
+                            <Stack
+                              direction="row"
+                              justifyContent="space-between"
                             >
-                              {item.user.name}
-                            </Typography>
-                            <Typography variant="subtitle2">
-                              {moment(item.updatedAt)
-                                .startOf("minute")
-                                .fromNow()}
+                              <Typography
+                                variant="h6"
+                                sx={{ textTransform: "capitalize" }}
+                              >
+                                {item.user.name}
+                              </Typography>
+                              <Typography variant="subtitle2">
+                                {moment(item.updatedAt)
+                                  .startOf("minute")
+                                  .fromNow()}
+                              </Typography>
+                            </Stack>
+                            <Typography variant="body1">
+                              {item.comment}
                             </Typography>
                           </Stack>
-                          <Typography variant="body1">
-                            {item.comment}
-                          </Typography>
-                        </Stack>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  ))}
+                    ))}
+                {data_comment && (
+                  <Stack
+                    sx={{
+                      display: `${
+                        data_comment.getComments.totalPage > 1 ? "flex" : "none"
+                      }`,
+                    }}
+                  >
+                    <Button variant="outlined" onClick={handleLimitComment}>
+                      See More
+                    </Button>
+                  </Stack>
+                )}
               </Grid>
             </Grid>
           </Container>

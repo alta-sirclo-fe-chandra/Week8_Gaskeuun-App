@@ -106,6 +106,32 @@ export const GET_JOINED_EVENTS = gql`
   }
 `
 
+export const GET_PARTICIPANT_STATUS = gql`
+  query($eventId: Int!) {
+    getParticipantStatus(eventId: $eventId) {
+        status
+    }
+  }
+`
+
+export const GET_COMMENTS = gql`
+query($eventId: Int!, $limit: Int!) {
+  getComments(eventId: $eventId, limit: $limit) {
+      comments {
+          id
+          user {
+              id
+              name
+              email 
+              imageUrl
+          }
+          comment
+      }
+      totalPage
+  }
+}
+`
+
 export const SIGN_IN = gql`
   query SIGN_IN($email: String!, $password: String!) {
     login(email: $email, password: $password) {
